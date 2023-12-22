@@ -30,7 +30,7 @@ const validateSignup = [
   handleValidationErrors
 ]
 
-// Sign up
+// Sign up Route
 router.post(
     '/',
     validateSignup,     //Validator middleware
