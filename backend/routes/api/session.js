@@ -46,7 +46,7 @@ const validateLogin = [
 // Log in
 router.post(
     '/',
-    validateLogin,  //Validates
+    validateLogin,  //Validator middleware
     async (req, res, next) => {
       const { credential, password } = req.body; //Credential can be username || email
   
