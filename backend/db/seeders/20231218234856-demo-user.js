@@ -21,16 +21,22 @@ module.exports = {
     */
    await User.bulkCreate([
     {
+      firstName: 'Demo',
+      lastName: 'Lition',
       email: 'demo@user.io',
       username: 'Demo-Lition',
       hashedPassword: bcrypt.hashSync('password')
     },
     {
+      firstName: 'FirstName1',
+      lastName: 'LastName1',
       email: 'user1@user.io',
       username: 'FakeUser1',
       hashedPassword: bcrypt.hashSync('password2')
     },
     {
+      firstName: 'FirstName2',
+      lastName: 'LastName2',
       email: 'user2@user.io',
       username: 'FakeUser2',
       hashedPassword: bcrypt.hashSync('password3')
@@ -54,3 +60,18 @@ module.exports = {
     }, {})
   }
 };
+
+fetch('/api/users', {
+  method: 'POST',
+  headers: {
+    "Content-Type": "application/json",
+    "XSRF-TOKEN": `Oy5nrbs2-aSoOtlvccvJIHQJQTyyHrZgOP3U`
+  },
+  body: JSON.stringify({
+    firstName: 'Demo',
+    lastName: 'Lition2',
+    email: 'demo1@user.io',
+    username: 'Demo-Lition2',
+    password: 'password'
+  })
+}).then(res => res.json()).then(data => console.log(data));
