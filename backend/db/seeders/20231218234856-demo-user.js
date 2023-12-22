@@ -60,18 +60,3 @@ module.exports = {
     }, {})
   }
 };
-
-fetch('/api/users', {
-  method: 'POST',
-  headers: {
-    "Content-Type": "application/json",
-    "XSRF-TOKEN": `Oy5nrbs2-aSoOtlvccvJIHQJQTyyHrZgOP3U`
-  },
-  body: JSON.stringify({
-    firstName: 'Demo',
-    lastName: 'Lition2',
-    email: 'demo1@user.io',
-    username: 'Demo-Lition2',
-    password: 'password'
-  })
-}).then(res => res.json()).then(data => console.log(data));
