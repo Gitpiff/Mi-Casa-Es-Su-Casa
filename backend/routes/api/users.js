@@ -38,7 +38,7 @@ const validateSignup = [
   handleValidationErrors
 ]
 
-// Sign up
+// Sign up Route
 router.post(
     '/',
     validateSignup,     //Validator middleware
@@ -47,7 +47,8 @@ router.post(
       const hashedPassword = bcrypt.hashSync(password);
       const user = await User.create({ email, username, firstName, lastName, hashedPassword });
 
-  
+
+ 
       const safeUser = {
         id: user.id,
         firstName: user.firstName,
