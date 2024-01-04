@@ -13,6 +13,7 @@ const router = express.Router();
 const validateSignup = [
   check('email')
     .exists({ checkFalsy: true })
+    .withMessage('User with that email already exists')
     .isEmail()
     .withMessage('Invalid email'),
   check('username')
@@ -39,16 +40,39 @@ const validateSignup = [
 ]
 
 // Sign up Route
-router.post(
-    '/',
-    validateSignup,     //Validator middleware
-    async (req, res) => {
-      const { email, password, username, firstName, lastName } = req.body;
-      const hashedPassword = bcrypt.hashSync(password);
+router.post( '/',validateSignup, async (req, res) => {
+  const { email, password, username, firstName, lastName } = req.body;
+  const hashedPassword = bcrypt.hashSync(password);
+
+      const duplicateEmail = await User.findOne({
+        where: {
+          email: email
+        }
+      });
+
+      if(duplicateEmail) return res.status(500).json({
+        message: "User already exists",
+        errors: {
+          email: "User with that email already exists"
+        }
+      });
+
+      const duplicateName = await User.findOne({
+        where: {
+          username: username
+        }
+      });
+
+      if(duplicateName) return res.status(500).json({
+        message: "User already exists",
+        errors: {
+        username: "User with that username already exists"
+  }
+      })
+
+
       const user = await User.create({ email, username, firstName, lastName, hashedPassword });
 
-
- 
       const safeUser = {
         id: user.id,
         firstName: user.firstName,
@@ -56,12 +80,13 @@ router.post(
         email: user.email,
         username: user.username,
       };
-  
+
       await setTokenCookie(res, safeUser);
-  
+
       return res.json({
         user: safeUser
       });
+
     }
 );
 
