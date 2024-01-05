@@ -91,7 +91,7 @@ module.exports = {
       createdAt: "2021-11-19 20:39:36",
       updatedAt: "2021-11-19 20:39:36"
     }
-   ], {validate: true})
+   ], options)
   },
 
   async down (queryInterface, Sequelize) {
