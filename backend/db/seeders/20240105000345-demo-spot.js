@@ -6,7 +6,7 @@ const { Spot } = require('../models');
 let options = {};
 if(process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA
-}
+};
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -91,7 +91,7 @@ module.exports = {
       createdAt: "2021-11-19 20:39:36",
       updatedAt: "2021-11-19 20:39:36"
     }
-   ])
+   ], {validate: true})
   },
 
   async down (queryInterface, Sequelize) {
