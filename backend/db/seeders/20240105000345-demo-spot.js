@@ -1,5 +1,5 @@
 'use strict';
-const bcrypt = require('bcryptjs');
+
 const { Spot } = require('../models');
 
 let options = {};
@@ -84,7 +84,7 @@ const demoSpots = [
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await Spot.bulkCreate(demoSpots, { validate: true })
+    await Spot.bulkCreate(demoSpots, options)
   },
 
   async down(queryInterface, Sequelize) {
