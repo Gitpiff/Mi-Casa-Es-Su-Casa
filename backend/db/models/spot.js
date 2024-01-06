@@ -15,13 +15,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'ownerId'
       });
 
-      Spot.hasMany(models.Booking, {
-        foreignKey: 'spotId'
-      });
+      // Spot.hasMany(models.Booking, {
+      //   foreignKey: 'spotId'
+      // });
 
-      Spot.belongsTo(models.Review, {
-        foreignKey: 'spotId'
-      });
+      // Spot.belongsTo(models.Review, {
+      //   foreignKey: 'spotId'
+      // });
     }
   }
   Spot.init({
