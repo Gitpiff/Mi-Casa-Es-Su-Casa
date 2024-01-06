@@ -40,6 +40,8 @@ const demoReviews = [
   }
 ]
 
+options.tableName = 'Reviews';
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -52,7 +54,8 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await Review.bulkCreate(demoReviews);
+  //  await Review.bulkCreate(demoReviews);
+  await queryInterface.bulkInsert(options, demoReviews)
   },
 
   async down (queryInterface, Sequelize) {
@@ -62,7 +65,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    options.tableName = 'Reviews';
+    
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       [Op.or]: demoReviews
