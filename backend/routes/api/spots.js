@@ -10,23 +10,6 @@ const router = express.Router();
 
 //Get All Spots
 router.get('/', async (req, res) => {
-    const { 
-        ownerId,
-        address,
-        city,
-        state,
-        country,
-        lat,
-        lng,
-        name,
-        description,
-        price,
-        createdAt,
-        updatedAt,
-        avgRating,
-        previewImage
-    } = req.body;
-
     const spots = await Spot.findAll()
 
     return res.json({
