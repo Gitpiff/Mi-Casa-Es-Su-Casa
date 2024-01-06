@@ -2,9 +2,9 @@
 /** @type {import('sequelize-cli').Migration} */
 
 let options = {};
-if(process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA //Defines your schema in options object
-};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -66,7 +66,7 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Spots';
+    options.tableName = "Spots";
     await queryInterface.dropTable(options);
   }
 };

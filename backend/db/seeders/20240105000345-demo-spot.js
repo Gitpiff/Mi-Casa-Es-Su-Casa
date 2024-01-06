@@ -5,7 +5,7 @@ const { Spot } = require('../models');
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
-};
+}
 
 //spots
 const spots = [
@@ -83,19 +83,14 @@ const spots = [
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-   await Spot.bulkCreate(spots, options)
+  async up(queryInterface, Sequelize) {
+    await Spot.bulkCreate(demoSpots, { validate: true })
   },
 
-  async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
+  async down(queryInterface, Sequelize) {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, { [Op.or]: demoSpots }, {})
+    return queryInterface.bulkDelete(options,
+      { [Op.or]: demoSpots }, {});
   }
 };
