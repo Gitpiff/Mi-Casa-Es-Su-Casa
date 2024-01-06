@@ -11,7 +11,7 @@ const demoReviews = [
   {
     userId: 1,
     spotId: 1,
-    review: "Very Clean! ",
+    review: "Very Clean!",
     stars: 4
   },
   {
