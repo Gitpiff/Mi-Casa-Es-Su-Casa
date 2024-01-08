@@ -4,23 +4,36 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot } = require('../../db/models');
-const Review = require('../../db/models/review');
-const Spotimage = require('../../db/models/spotimage');
+const { Review } = require('../../db/models');
+const { SpotImage } = require('../../db/models');
 
 const router = express.Router();
 
 //Get All Spots
 router.get('/', async (req, res) => {
+    //const spots = await Spot.findAll();
     const spots = await Spot.findAll({
-        include: [
-            {
-                model: Review
-            },
-            {
-                model: Spotimage
-            }
-        ]
+        include: { model: SpotImage }
+        //If spotImage.preview is true, then create/append a new attribute
+        //called previewImage with the value of the url of said image
     })
+
+    //Store each spot into an array so we can add attributes -avgRating & previewImage-
+    let spotList = []; 
+
+    spots.forEach(spot => {
+        spotList.push(spot.toJSON())
+    });
+
+    console.log(spotList);
+
+    spotList.forEach(spot => {
+        spot.SpotImage.forEach(image => {
+            if(image.preview) {
+                spot.previewImage = image.url
+            }
+        })
+    });
 
     return res.json({
         spots
