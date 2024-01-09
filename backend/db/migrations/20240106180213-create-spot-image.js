@@ -25,6 +25,10 @@ module.exports = {
       preview: {
         type: Sequelize.BOOLEAN
       },
+      previewImage: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: {
         type: Sequelize.DATE
       },
