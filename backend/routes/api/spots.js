@@ -13,23 +13,23 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const spots = await Spot.findAll({
-            attributes: [
-                'id', 
-                'ownerId', 
-                'address', 
-                'city', 
-                'state', 
-                'country', 
-                'lat', 
-                'lng', 
-                'name', 
-                'description', 
-                'price', 
-                'createdAt', 
-                'updatedAt', 
-                //'avgRating', 
-                //'previewImage' 
-            ]
+            // attributes: [
+            //     'id', 
+            //     'ownerId', 
+            //     'address', 
+            //     'city', 
+            //     'state', 
+            //     'country', 
+            //     'lat', 
+            //     'lng', 
+            //     'name', 
+            //     'description', 
+            //     'price', 
+            //     'createdAt', 
+            //     'updatedAt', 
+            //     //'avgRating', 
+            //     //'previewImage' 
+            // ]
         });
 
         res.json({spots});
@@ -44,23 +44,23 @@ router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
 
     const Spots = await Spot.findAll({
-        attributes: [
-            'id', 
-            'ownerId', 
-            'address', 
-            'city', 
-            'state', 
-            'country', 
-            'lat', 
-            'lng', 
-            'name', 
-            'description', 
-            'price', 
-            'createdAt', 
-            'updatedAt', 
-            //'avgRating', 
-            //'previewImage' 
-        ],
+        // attributes: [
+        //     'id', 
+        //     'ownerId', 
+        //     'address', 
+        //     'city', 
+        //     'state', 
+        //     'country', 
+        //     'lat', 
+        //     'lng', 
+        //     'name', 
+        //     'description', 
+        //     'price', 
+        //     'createdAt', 
+        //     'updatedAt', 
+        //     //'avgRating', 
+        //     //'previewImage' 
+        // ],
         where: {
             ownerId: user.id
         }
@@ -73,8 +73,9 @@ router.get('/current', requireAuth, async (req, res) => {
 
 //Get details of a Spot from an id
 router.get('/:spotId', async (req, res) => {
-    const { spotId } = req.params;
-    //console.log(spotId)
+   const { spotId } = req.params;
+
+    console.log(spotId)
     try {
         const spot = await Spot.findByPk(parseInt(spotId));
 
@@ -87,6 +88,7 @@ router.get('/:spotId', async (req, res) => {
         return res.json({
             spot
         })
+        
     } catch(error) {
         console.log(error)
     }
