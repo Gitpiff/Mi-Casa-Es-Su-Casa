@@ -84,7 +84,7 @@ app.use((err, _req, res, _next) => {
       //stack: isProduction ? null : err.stack
     });
     //isProduction ? null : (this.response.stack = err.stack);
-    if (!isProduction) response.stack = err.stack;
+    if (!isProduction) res.stack = err.stack;
   });
 
 module.exports = app;

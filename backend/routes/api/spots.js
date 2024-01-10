@@ -11,47 +11,63 @@ const router = express.Router();
 
 //Get All Spots
 router.get('/', async (req, res) => {
-    //const spots = await Spot.findAll();
-    const spots = await Spot.findAll({
-        include: { model: SpotImage }
-        //If spotImage.preview is true, then create/append a new attribute
-        //called previewImage with the value of the url of said image
-    })
+    try {
+        const spots = await Spot.findAll({
+            attributes: [
+                'id', 
+                'ownerId', 
+                'address', 
+                'city', 
+                'state', 
+                'country', 
+                'lat', 
+                'lng', 
+                'name', 
+                'description', 
+                'price', 
+                'createdAt', 
+                'updatedAt', 
+                //'avgRating', 
+                //'previewImage' 
+            ]
+        });
 
-    //Store each spot into an array so we can add attributes -avgRating & previewImage-
-    let spotList = []; 
+        res.json({spots});
 
-    spots.forEach(spot => {
-        spotList.push(spot.toJSON())
-    });
-
-    console.log(spotList);
-
-    spotList.forEach(spot => {
-        spot.SpotImage.forEach(image => {
-            if(image.preview) {
-                spot.previewImage = image.url
-            }
-        })
-    });
-
-    return res.json({
-        spots
-    })
+    } catch(error) {
+        console.log(error);
+    };
 });
 
 //Get all Spots owned by the Current User
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
 
-    const currentUserSpots = await Spot.findAll({
+    const Spots = await Spot.findAll({
+        attributes: [
+            'id', 
+            'ownerId', 
+            'address', 
+            'city', 
+            'state', 
+            'country', 
+            'lat', 
+            'lng', 
+            'name', 
+            'description', 
+            'price', 
+            'createdAt', 
+            'updatedAt', 
+            //'avgRating', 
+            //'previewImage' 
+        ],
         where: {
             ownerId: user.id
         }
     })
 
     return res.json({
-        currentUserSpots
+        Spots
     })
 });
 

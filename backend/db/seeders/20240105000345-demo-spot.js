@@ -52,7 +52,7 @@ const demoSpots = [
     updatedAt: "2021-11-19 20:39:36"
   },
   {
-    ownerId: 4,
+    ownerId: 2,
     address: "123 Argentina Road",
     city: "Buenos Aires",
     state: "Rio de la Plata",
@@ -66,7 +66,7 @@ const demoSpots = [
     updatedAt: "2021-11-19 20:39:36"
   },
   {
-    ownerId: 5,
+    ownerId: 1,
     address: "123 Madrid Ave",
     city: "Madrid",
     state: "Madrid",
@@ -84,7 +84,12 @@ const demoSpots = [
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await Spot.bulkCreate(demoSpots, options)
+    try{
+      await Spot.bulkCreate(demoSpots, options)
+
+    } catch(err) {
+      console.log(err)
+    }
   },
 
   async down(queryInterface, Sequelize) {

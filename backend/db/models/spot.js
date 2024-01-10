@@ -16,32 +16,85 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       Spot.hasMany(models.SpotImage, {
-        foreignKey: 'previewImage',
-        constraints: false
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE'
       })
 
-      // Spot.hasMany(models.Booking, {
-      //   foreignKey: 'spotId'
-      // });
+      Spot.hasMany(models.Booking, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE'
+      });
 
-      // Spot.belongsTo(models.Review, {
-      //   foreignKey: 'spotId'
-      // });
+      Spot.hasMany(models.Review, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE'
+      });
     }
   }
   Spot.init({
-    ownerId: DataTypes.INTEGER,
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING,
-    country: DataTypes.STRING,
-    lat: DataTypes.DECIMAL(3,7),
-    lng: DataTypes.DECIMAL(3,7),
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    price: DataTypes.INTEGER,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    ownerId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    state: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    lat: {
+      type: DataTypes.DECIMAL(3,7),
+      allowNull: false,
+      validate: {
+        min: - 90,
+        max: 90
+      }
+    },
+    lng: {
+      type: DataTypes.DECIMAL(3,7),
+      allowNull: false,
+      validate: {
+        min: - 180,
+        max: 180
+      }
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: 1
+      }
+    },
+    createdAt:  {
+      type: DataTypes.DATE
+    },
+    updatedAt:  {
+      type: DataTypes.DATE
+    },
   }, {
     sequelize,
     modelName: 'Spot',
