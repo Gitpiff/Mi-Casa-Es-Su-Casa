@@ -51,13 +51,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'End date must be after start date'
         }
       }
-    },
-    createdAt: {
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      type: DataTypes.DATE
-    },
+    }
   }, {
     sequelize,
     modelName: 'Booking',

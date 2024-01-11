@@ -52,13 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         max: 5
       }
-    },
-    createdAt: {
-      type: DataTypes.DATE
-    },
-    updatedAt:{
-      type: DataTypes.DATE
-    },
+    }
   }, {
     sequelize,
     modelName: 'Review',

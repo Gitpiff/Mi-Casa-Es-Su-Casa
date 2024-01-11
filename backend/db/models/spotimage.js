@@ -38,14 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: false
-    },
-    //previewImage: DataTypes.STRING,
-    createdAt: {
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      type: DataTypes.DATE
-    },
+    }
   }, {
     sequelize,
     modelName: 'SpotImage',

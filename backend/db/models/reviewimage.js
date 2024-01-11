@@ -36,12 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Reviews'
       }
-    },
-    createdAt: {
-      type: DataTypes.DATE
-    },
-    updatedAt:  {
-      type: DataTypes.DATE
     }
   }, {
     sequelize,
