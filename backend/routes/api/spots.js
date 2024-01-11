@@ -52,7 +52,6 @@ const validateSpot = [
 
 //Get All Spots
 router.get('/', async (req, res) => {
-    try {
         const spots = await Spot.findAll({
            include: [
                 {
@@ -91,10 +90,6 @@ router.get('/', async (req, res) => {
         });
 
         res.json({Spots});
-
-    } catch(error) {
-        console.log(error);
-    };
 });
 
 //Get all Spots owned by the Current User
