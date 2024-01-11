@@ -88,7 +88,13 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         min: 1
       }
-    }
+    },
+    createdAt:  {
+      type: DataTypes.DATE
+    },
+    updatedAt:  {
+      type: DataTypes.DATE
+    },
   }, {
     sequelize,
     modelName: 'Spot',
