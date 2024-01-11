@@ -22,7 +22,8 @@ module.exports = {
         references: {
           model: 'Spots',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
       },
       url: {
         type: Sequelize.STRING,
@@ -33,10 +34,6 @@ module.exports = {
         allowNull: true,
         defaultValue: true
       },
-      // previewImage: {
-      //   type: Sequelize.STRING,
-      //   allowNull: true
-      // },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
