@@ -6,6 +6,8 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot } = require('../../db/models');
 const { Review } = require('../../db/models');
 const { SpotImage } = require('../../db/models');
+const { User } = require('../../db/models');
+
 
 const router = express.Router();
 
@@ -13,26 +15,43 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const spots = await Spot.findAll({
-            // attributes: [
-            //     'id', 
-            //     'ownerId', 
-            //     'address', 
-            //     'city', 
-            //     'state', 
-            //     'country', 
-            //     'lat', 
-            //     'lng', 
-            //     'name', 
-            //     'description', 
-            //     'price', 
-            //     'createdAt', 
-            //     'updatedAt', 
-            //     //'avgRating', 
-            //     //'previewImage' 
-            // ]
+           include: [
+                {
+                    model: Review
+                },
+                {
+                    model: SpotImage
+                }
+           ]
         });
 
-        res.json({spots});
+        let Spots = [];
+
+        spots.forEach(spot => {
+            Spots.push(spot.toJSON())   //Conver to JSON so we can add attributes
+        });
+
+        Spots.forEach(spot => {
+            let total = 0;
+
+            spot.Reviews.forEach(review => {
+                total += review.stars;
+            });
+
+         spot.avgRating = total / spot.Reviews.length;  
+         delete spot.Reviews;   //Keeps it from showing in the res.json
+         
+         //previewImage
+         spot.SpotImages.forEach(image => {
+            if (image.preview === true) {
+                spot.previewImage = image.url
+            }
+        });   
+        delete spot.SpotImages;
+            
+        });
+
+        res.json({Spots});
 
     } catch(error) {
         console.log(error);
@@ -43,32 +62,48 @@ router.get('/', async (req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
 
-    const Spots = await Spot.findAll({
-        // attributes: [
-        //     'id', 
-        //     'ownerId', 
-        //     'address', 
-        //     'city', 
-        //     'state', 
-        //     'country', 
-        //     'lat', 
-        //     'lng', 
-        //     'name', 
-        //     'description', 
-        //     'price', 
-        //     'createdAt', 
-        //     'updatedAt', 
-        //     //'avgRating', 
-        //     //'previewImage' 
-        // ],
+    const spots = await Spot.findAll({
+       
         where: {
             ownerId: user.id
-        }
+        },
+        include: [
+            {
+                model: Review
+            },
+            {
+                model: SpotImage
+            }
+        ]
     })
 
-    return res.json({
-        Spots
-    })
+    let Spots = [];
+
+    spots.forEach(spot => {
+        Spots.push(spot.toJSON())   //Conver to JSON so we can add attributes
+    });
+
+    Spots.forEach(spot => {
+        let total = 0;
+
+        spot.Reviews.forEach(review => {
+            total += review.stars;
+        });
+
+     spot.avgRating = total / spot.Reviews.length;  
+     delete spot.Reviews;
+     
+     //previewImage
+     spot.SpotImages.forEach(image => {
+        if (image.preview === true) {
+            spot.previewImage = image.url
+        }
+    });   
+    delete spot.SpotImages;
+        
+    });
+
+    res.json({Spots});
 });
 
 //Get details of a Spot from an id
@@ -77,17 +112,54 @@ router.get('/:spotId', async (req, res) => {
 
     console.log(spotId)
     try {
-        const spot = await Spot.findByPk(parseInt(spotId));
+        const spot = await Spot.findByPk(parseInt(spotId), {
+            include: [
+                {
+                    model: Review
+                },
+                {
+                    model: SpotImage,
+                    attributes: ['id', 'url', 'preview']
+                },
+                {
+                    model: User,
+                    attributes: ['id', 'firstName', 'lastName']
+                }
+            ],
+        });
 
         if(!spot) return res.status(404).json(
             {
                 message: "Spot couldn't be found"
               }
         )
+         else {
+            let total = 0;
+            spot.Reviews.forEach(review => {
+                total += review.stars;
+            });
 
-        return res.json({
-            spot
-        })
+            const spotObj = {
+                id: spot.id,
+                ownerId: spot.ownerId,
+                address: spot.address,
+                city: spot.city,
+                state: spot.state,
+                country: spot.country,
+                lat: Number(spot.lat),
+                lng: Number(spot.lng),
+                name: spot.name,
+                description: spot.description,
+                price: Number(spot.price),
+                createdAt: spot.createdAt,
+                updatedAt: spot.updatedAt,
+                numReviews: await spot.countReviews(),
+                avgStarRating: total / spot.Reviews.length,
+                SpotImages: spot.SpotImages,
+                Owner: spot.User
+            }
+            return res.json(spotObj)
+         }
         
     } catch(error) {
         console.log(error)
