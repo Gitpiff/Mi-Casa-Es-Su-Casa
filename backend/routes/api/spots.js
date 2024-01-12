@@ -53,14 +53,7 @@ const validateSpot = [
 //Get All Spots
 router.get('/', async (req, res) => {
         const spots = await Spot.findAll({
-           include: [
-                {
-                    model: Review
-                },
-                {
-                    model: SpotImage
-                }
-           ]
+           include: [ Review, SpotImage ]
         });
 
         let Spots = [];
