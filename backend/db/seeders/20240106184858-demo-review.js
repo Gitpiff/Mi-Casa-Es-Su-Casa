@@ -35,7 +35,7 @@ const demoReviews = [
   {
     userId: 2,
     spotId: 1,
-    review: "Beautiful View! ",
+    review: "Beautiful View!",
     stars: 5
   }
 ]
@@ -56,7 +56,7 @@ module.exports = {
     */
   //  await Review.bulkCreate(demoReviews);
   //await Review.bulkCreate(demoReviews, options)
-  await queryInterface.bulkInsert(demoReviews, options)
+  await queryInterface.bulkInsert(options, demoReviews)
   },
 
   async down (queryInterface, Sequelize) {
