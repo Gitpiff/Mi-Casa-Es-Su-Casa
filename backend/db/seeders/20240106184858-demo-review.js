@@ -56,17 +56,10 @@ module.exports = {
     */
   //  await Review.bulkCreate(demoReviews);
   //await Review.bulkCreate(demoReviews, options)
-  return queryInterface.bulkInsert(demoReviews, options)
+  await queryInterface.bulkInsert(demoReviews, options)
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
-    
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       [Op.or]: demoReviews
