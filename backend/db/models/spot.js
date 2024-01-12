@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Spot.hasMany(models.Review, {
-        foreignKey: 'spotId'
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE',
+        hooks: true
       });
 
       Spot.belongsTo(models.User, {
@@ -21,12 +23,14 @@ module.exports = (sequelize, DataTypes) => {
 
       Spot.hasMany(models.SpotImage, {
         foreignKey: 'spotId',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        hooks: true
       })
 
       Spot.hasMany(models.Booking, {
         foreignKey: 'spotId',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        hooks: true
       });
 
     }
@@ -89,12 +93,12 @@ module.exports = (sequelize, DataTypes) => {
         min: 1
       }
     },
-    createdAt:  {
-      type: DataTypes.DATE
-    },
-    updatedAt:  {
-      type: DataTypes.DATE
-    },
+    // createdAt:  {
+    //   type: DataTypes.DATE
+    // },
+    // updatedAt:  {
+    //   type: DataTypes.DATE
+    // },
   }, {
     sequelize,
     modelName: 'Spot',
