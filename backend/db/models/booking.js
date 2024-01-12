@@ -10,48 +10,52 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Booking.belongsTo(models.Spot, {
-        foreignKey: 'spotId'
-      });
 
-      Booking.belongsTo(models.User, {
-        foreignKey: 'userId'
-      })
+      Booking.belongsTo(models.Spot,
+        { foreignKey: 'spotId' });
+
+      Booking.belongsTo(models.User,
+        { foreignKey: 'userId' });
     }
   }
   Booking.init({
     id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false
-    },
-    spotId: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    userId: {
-      type: DataTypes.INTEGER,
       allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
     },
+    userId: DataTypes.INTEGER,
+    spotId: DataTypes.INTEGER,
     startDate: {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        isAfter: new Date()
+        notNull: { msg: "startDate is required" },
+        isBefore(value) {
+          if(new Date (value) <= this.createdAt) {
+            throw new Error("startDate cannot be in the past")
+          }
+        }
       }
     },
     endDate: {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        isAfter: {
-          args: 'startDate',
-          msg: 'End date must be after start date'
+        notNull: { msg: "endDate cannot be on or before startDate" },
+        isAfter(value) {
+          if(new Date (value) <= this.startDate) {
+            throw new Error("endDate cannot be on or before startDate")
+          }
+        },
+        isBefore(value) {
+          if(new Date (value) <= this.createdAt) {
+            throw new Error("endDate cannot be in the past")
+          }
         }
-      }
-    }
+      },
+    },
   }, {
     sequelize,
     modelName: 'Booking',
