@@ -53,7 +53,17 @@ const validateSpot = [
 //Get All Spots
 router.get('/', async (req, res) => {
         const spots = await Spot.findAll({
-           include: [ Review, SpotImage ]
+           include: [ 
+            { 
+                model: Review
+            }, 
+            { 
+                model: SpotImage,
+                where: {
+                    preview: true
+                }
+            } 
+        ]
         });
 
         let Spots = [];
@@ -78,7 +88,7 @@ router.get('/', async (req, res) => {
                 spot.previewImage = image.url
             }
         });   
-        delete spot.SpotImages;
+        //delete spot.SpotImages;
             
         });
 
