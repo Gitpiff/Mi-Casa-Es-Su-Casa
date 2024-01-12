@@ -20,7 +20,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users'
+          model: 'Users',
+          key: 'id'
         },
         onDelete: 'CASCADE'
       },
@@ -28,8 +29,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Spots'
-        }
+          model: 'Spots',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
       },
       review: {
         type: Sequelize.TEXT,
