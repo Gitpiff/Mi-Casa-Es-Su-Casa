@@ -56,7 +56,7 @@ module.exports = {
     */
   //  await Review.bulkCreate(demoReviews);
   //await Review.bulkCreate(demoReviews, options)
-  await queryInterface.bulkInsert(demoReviews, options)
+  return queryInterface.bulkInsert(demoReviews, options)
   },
 
   async down (queryInterface, Sequelize) {
