@@ -42,7 +42,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await ReviewImage.bulkCreate(demoReviewImages, options);
+    await ReviewImage.bulkCreate(options, demoReviewImages);
   },
 
   async down (queryInterface, Sequelize) {
