@@ -54,9 +54,9 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-  //  await Review.bulkCreate(demoReviews);
-  //await Review.bulkCreate(demoReviews, options)
-  await queryInterface.bulkInsert(options, demoReviews)
+  
+  await Review.bulkCreate(options, demoReviews)
+  //await queryInterface.bulkInsert(options, demoReviews)
   },
 
   async down (queryInterface, Sequelize) {
