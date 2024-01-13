@@ -108,7 +108,7 @@ router.get('/current', requireAuth, async (req, res) => {
                     attributes: ['stars'],
                 },
                 {
-                    model: Image,
+                    model: ReviewImage,
                     attributes: ['url', 'preview'],
                 }
             ],
