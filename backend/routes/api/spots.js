@@ -108,7 +108,7 @@ router.get('/current', requireAuth, async (req, res) => {
                     attributes: ['stars'],
                 },
                 {
-                    model: ReviewImage,
+                    model: SpotImage,
                     attributes: ['url', 'preview'],
                 }
             ],
@@ -129,7 +129,7 @@ router.get('/current', requireAuth, async (req, res) => {
             spotsList.push(spot.toJSON())
         })
 
-        ///get avgRating
+        
         let stars = 0;
         spotsList.forEach(spot => {
             spot.Reviews.forEach(review => {
