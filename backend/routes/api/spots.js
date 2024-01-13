@@ -96,48 +96,69 @@ router.get('/', async (req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
 
-    const spots = await Spot.findAll({
-       
-        where: {
+    if (user) {
+        const safeUser = {
             ownerId: user.id
-        },
-        include: [
-            {
-                model: Review
-            },
-            {
-                model: SpotImage
-            }
-        ]
-    })
-
-    let Spots = [];
-
-    spots.forEach(spot => {
-        Spots.push(spot.toJSON())   //Conver to JSON so we can add attributes
-    });
-
-    Spots.forEach(spot => {
-        let total = 0;
-
-        spot.Reviews.forEach(review => {
-            total += review.stars;
-        });
-
-     spot.avgRating = total / spot.Reviews.length;  
-     delete spot.Reviews;
-     
-     //previewImage
-     spot.SpotImages.forEach(image => {
-        if (image.preview === true) {
-            spot.previewImage = image.url
         }
-    });   
-    delete spot.SpotImages;
-        
-    });
+        const spots = await Spot.findAll({
+            where: safeUser,
+            include: [
+                {
+                    model: Review,
+                    attributes: ['stars'],
+                },
+                {
+                    model: Image,
+                    attributes: ['url', 'preview'],
+                }
+            ],
+        })
+        if (!spots.length) {
+            return res.status(404).json({
+                message: "Spots couldn't be found"
+            })
+        }
+        if (!user) {
+            return res.status(401).json({
+                message: "Authentication required"
+            })
+        }
+        let spotsList = [];
 
-    res.json({Spots});
+        spots.forEach(spot => {
+            spotsList.push(spot.toJSON())
+        })
+
+        ///get avgRating
+        let stars = 0;
+        spotsList.forEach(spot => {
+            spot.Reviews.forEach(review => {
+                stars += review.stars
+                if (spot.Reviews.length > 1) {
+                    spot.avgRating = stars / spot.Reviews.length
+                } else {
+                    spot.avgRating = review.stars
+                }
+            });
+            if (!spot.avgRating) {
+                spot.avgRating = "No ratings available"
+            }
+            delete spot.Reviews
+        })
+        spotsList.forEach(spot => {
+            spot.Images.forEach(image => {
+                if (image.preview) {
+                    spot.previewImage = image.url
+                }
+            });
+            if (!spot.previewImage) {
+                spot.previewImage = "No preview image available"
+            }
+            delete spot.Images
+        })
+
+        res.json({ Spots: spotsList })
+    }
 });
 
 //Get details of a Spot from an id
