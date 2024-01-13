@@ -88,7 +88,7 @@ router.get('/', async (req, res) => {
                 spot.previewImage = image.url
             }
         });   
-        //delete spot.SpotImages;
+        delete spot.SpotImages;
             
         });
 

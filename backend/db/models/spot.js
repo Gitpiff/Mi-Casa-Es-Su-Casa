@@ -4,11 +4,6 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
       Spot.hasMany(models.Review, {
@@ -93,12 +88,12 @@ module.exports = (sequelize, DataTypes) => {
         min: 1
       }
     },
-    // createdAt:  {
-    //   type: DataTypes.DATE
-    // },
-    // updatedAt:  {
-    //   type: DataTypes.DATE
-    // },
+    createdAt:  {
+      type: DataTypes.DATE
+    },
+    updatedAt:  {
+      type: DataTypes.DATE
+    },
   }, {
     sequelize,
     modelName: 'Spot',
