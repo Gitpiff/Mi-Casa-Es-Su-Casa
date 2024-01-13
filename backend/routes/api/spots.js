@@ -96,69 +96,49 @@ router.get('/', async (req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
 
-    if (user) {
-        const safeUser = {
+    const spots = await Spot.findAll({
+        where: {
             ownerId: user.id
-        }
-        const spots = await Spot.findAll({
-            where: safeUser,
-            include: [
-                {
-                    model: Review,
-                    attributes: ['stars'],
-                },
-                {
-                    model: SpotImage,
-                    attributes: ['url', 'preview'],
-                }
-            ],
-        })
-        if (!spots.length) {
-            return res.status(404).json({
-                message: "Spots couldn't be found"
-            })
-        }
-        if (!user) {
-            return res.status(401).json({
-                message: "Authentication required"
-            })
-        }
-        let spotsList = [];
-
-        spots.forEach(spot => {
-            spotsList.push(spot.toJSON())
-        })
-
-        
-        let stars = 0;
-        spotsList.forEach(spot => {
-            spot.Reviews.forEach(review => {
-                stars += review.stars
-                if (spot.Reviews.length > 1) {
-                    spot.avgRating = stars / spot.Reviews.length
-                } else {
-                    spot.avgRating = review.stars
-                }
-            });
-            if (!spot.avgRating) {
-                spot.avgRating = "No ratings available"
+        },
+        include: [
+            {
+                model: Review
+            },
+            {
+                model: SpotImage
             }
-            delete spot.Reviews
-        })
-        spotsList.forEach(spot => {
-            spot.Images.forEach(image => {
-                if (image.preview) {
-                    spot.previewImage = image.url
-                }
-            });
-            if (!spot.previewImage) {
-                spot.previewImage = "No preview image available"
-            }
-            delete spot.Images
-        })
+        ]
+    });
+    const spotObj = {};
+    const spotsList = [];
 
-        res.json({ Spots: spotsList })
-    }
+    spots.forEach(spot => {
+        spotsList.push(spot.toJSON())
+    });
+
+    spotsList.forEach(spot => {
+        spot.lat = Number(spot.lat);
+        spot.lng = Number(spot.lng);
+        spot.price = Number(spot.price);
+
+        let total = 0;
+        spot.Reviews.forEach(review => {
+            total += review.stars;
+        });
+        spot.avgRating = total / spot.Reviews.length;
+        delete spot.Reviews;
+
+        spot.SpotImages.forEach(image => {
+            if (image.preview === true) {
+                spot.previewImage = image.url
+            }
+        });
+        delete spot.SpotImages;
+    });
+
+    spotObj.Spots = spotsList;
+
+    return res.json(spotObj)
 });
 
 //Get details of a Spot from an id
