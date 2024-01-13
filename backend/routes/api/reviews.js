@@ -23,66 +23,56 @@ const validateReview = [
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
 
-    if (user) {
-        const reviews = await Review.findAll({
-            where: {
-                userId: user.id
+    const reviews = await Review.findAll({
+        where: {
+            userId: user.id
+        },
+        include: [
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
             },
-            include: [
-                {
-                    model: User,
-                    attributes: ['id', 'firstName', 'lastName'],
+            {
+                model: Spot,
+                attributes: {
+                    exclude: ['description', 'createdAt', 'updatedAt']
                 },
-                {
-                    model: Spot,
-                    include: [
-                        {
-                            model: SpotImage,
-                            attributes: ["url"]
-                        }
-                    ],
-                    attributes: { exclude: ['description', 'createdAt', 'updatedAt'] },
-                },
-                {
-                    model: ReviewImage,
-                    attributes: ['id', 'url']
-                }
-            ],
-        })
-        if (!reviews.length) {
-            return res.status(404).json({
-                message: "Reviews couldn't be found"
-            })
-        }
-        if (!user) {
-            return res.status(401).json({
-                message: "Authentication required"
-            })
-        }
-        let reviewList = [];
-
-        reviews.forEach(review => {
-            reviewList.push(review.toJSON())
-        })
-
-
-        reviewList.forEach(review => {
-            if(review.Spot.Images[0].preview) {
-                review.Spot.previewImage = review.Spot.Images[0].url
+                include: [
+                    {
+                        model: SpotImage
+                    }
+                ]
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id', 'url']
             }
-            delete review.Spot.Images
-        })
+        ]
+    });
 
-        reviewList.forEach(review => {
-            if (!review.Images.length) {
-                review.ReviewImages = "No Review Images available"
-            } else {
-                review.ReviewImages = review.Images;
+    const reviewObj = {};
+    const reviewsList = [];
+
+    reviews.forEach(review => {
+        reviewsList.push(review.toJSON())
+    });
+
+    reviewsList.forEach(review => {
+        review.Spot.lat = Number(review.Spot.lat);
+        review.Spot.lng = Number(review.Spot.lng);
+        review.Spot.price = Number(review.Spot.price);
+
+        review.Spot.SpotImages.forEach(image => {
+            if (image.preview === true) {
+                review.Spot.previewImage = image.url;
             }
-            delete review.Images
-        })
-        res.json({ Reviews: reviewList })
-    }
+        });
+        delete review.Spot.SpotImages;
+    });
+
+    reviewObj.Reviews = reviewsList;
+
+    return res.json(reviewObj);
 });
 
 
