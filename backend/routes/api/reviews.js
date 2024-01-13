@@ -1,9 +1,23 @@
 const express = require('express');
-
+const { check } = require('express-validator');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, Review, ReviewImage, User } = require('../../db/models');
+const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
+
+const validateReview = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .custom(async val => {
+            if (!val || val < 1 || val > 5) {
+                throw new Error('Stars must be an integer from 1 to 5')
+            }
+        }),
+    handleValidationErrors
+];
 
 //Get all Reviews of the Current User
 router.get('/current', requireAuth, async (req, res, next) => {
@@ -53,10 +67,11 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 //Add an Image to a Review based on the Review's id
-router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
+router.post('/:reviewId/image', requireAuth, async(req, res, next) => {
     const { url } = req.body;
+    const reviewId = Number(req.params.reviewId);
 
-    const review = await Review.findByPk(req.params.reviewId, {
+    const review = await Review.findByPk(reviewId, {
         include: [
             {
                 model: ReviewImage
@@ -80,6 +95,39 @@ router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
     });
 
     return res.json({id: newImage.reviewId, url: newImage.url})
+});
+
+
+//Edit a Review
+router.put('/:reviewId', requireAuth, validateReview, async(req, res, next) => {
+    const reviewId = Number(req.params.reviewId);
+    const review = await Review.findByPk(reviewId);
+
+    if(!review) {
+        return res.status(404).json(
+            {
+                message: "Review couldn't be found"
+            }
+        )
+    };
+
+    if (req.user.id !== review.userId) {
+        return res.status(403).json(
+            {
+                 message: 'Forbidden' 
+            }
+        );
+    };
+
+    review.set({
+        review: req.body.review,
+        stars: req.body.stars
+    });
+
+    await review.save();
+
+    return res.json(review);
+
 });
 
 module.exports = router;
