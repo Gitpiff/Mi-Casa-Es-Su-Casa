@@ -55,7 +55,7 @@ module.exports = {
      * }], {});
     */
   
-  await Review.bulkCreate(options, demoReviews)
+  await queryInterface.bulkInsert(options, demoReviews)
   //await queryInterface.bulkInsert(options, demoReviews)
   },
 

@@ -61,7 +61,8 @@ router.get('/', async (req, res) => {
                 model: SpotImage,
                 where: {
                     preview: true
-                }
+                },
+                required: false //prevents inner join
             } 
         ]
         });

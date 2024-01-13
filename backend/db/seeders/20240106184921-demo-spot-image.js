@@ -35,6 +35,7 @@ const demoSpotImages = [
   }
 ]
 
+options.tableName = 'SpotImages';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -47,7 +48,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await SpotImage.bulkCreate(options, demoSpotImages);
+   await queryInterface.bulkInsert(options, demoSpotImages);
   },
 
   async down (queryInterface, Sequelize) {
@@ -57,7 +58,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    options.tableName = 'SpotImages';
     const Op = Sequelize.op;
     return queryInterface.bulkDelete(options, {
       [Op.or]: demoSpotImages
