@@ -609,4 +609,6 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
         }
 });
 
+
+
 module.exports = router;
