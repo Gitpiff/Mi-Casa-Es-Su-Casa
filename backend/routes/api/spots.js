@@ -3,12 +3,7 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot } = require('../../db/models');
-const { Review } = require('../../db/models');
-const { SpotImage } = require('../../db/models');
-const { ReviewImage } = require('../../db/models');
-const { User } = require('../../db/models');
-
+const { Spot, Review, SpotImage, ReviewImage, Booking, User } = require('../../db/models');
 
 const router = express.Router();
 
@@ -405,7 +400,80 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
         stars
     })
 
-    res.json(newReview);
-})
+    return res.json(newReview);
+});
+
+
+//Get all Bookings for a Spot based on the Spot's id
+router.get('/:spotId/bookings', requireAuth, async(req, res, next) => {
+    const spotId = Number(req.params.spotId);
+    const userId = req.user.id;
+    const spot = await Spot.findByPk(spotId);
+
+    if(!spot) {
+        return res.status(404).json(
+            {
+                message: "Spot couldn't be found"
+            }
+        )
+    };
+
+    const bookings = await Booking.findAll({
+        where: {
+            spotId: spot.id
+        },
+        include: [
+            {
+                model: User
+            }
+        ]
+    });
+
+    let bookingList = [];
+    let userBookings = {};
+
+
+    //If you are the owner of the spot
+    if(userId === spot.ownerId) {
+        bookings.forEach(booking => {
+            bookingList.push(
+                userBookings = {
+                    User : {
+                        id: booking.User.id,
+                        firstName: booking.User.firstName,
+                        lastName: booking.User.lastName
+                    },
+                    id: booking.id,
+                    spotId: booking.spotId,
+                    userId: booking.userId,
+                    startDate: booking.startDate,
+                    endDate: booking.endDate,
+                    createdAt: booking.createdAt,
+                    updatedAt: booking.updatedAt
+                }
+            )
+        })
+    } else {    //If you are NOT the owner of the spot
+        bookings.forEach(booking => {
+            bookingList.push(
+                userBookings = {
+                    spotId: booking.spotId,
+                    startDate: booking.startDate,
+                    endDate: booking.endDate
+                }
+            )
+        })
+    };
+
+   return res.json(
+    {
+        Bookings: bookingList
+    }
+   )
+});
+
+
+//Create a Booking from a Spot based on the Spot's id
+
 
 module.exports = router;
