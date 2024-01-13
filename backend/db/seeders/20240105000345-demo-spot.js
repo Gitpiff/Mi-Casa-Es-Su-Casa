@@ -81,11 +81,12 @@ const demoSpots = [
   }
  ]
 
+ options.tableName = 'Spots';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     try{
-      await Spot.bulkCreate(demoSpots, options)
+      await queryInterface.bulkInsert(options, demoSpots)
 
     } catch(err) {
       console.log(err)
@@ -93,7 +94,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options,
       { [Op.or]: demoSpots }, {});
