@@ -1,7 +1,7 @@
 const express = require('express');
 const { check } = require('express-validator');
 const { requireAuth } = require('../../utils/auth');
-const { Spot, Review, ReviewImage, User } = require('../../db/models');
+const { Spot, Review, ReviewImage, User, SpotImage } = require('../../db/models');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
@@ -23,46 +23,66 @@ const validateReview = [
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
 
-    const reviews = await Review.findAll({
-        where: {
-            userId: user.id
-        },
-        include: [
-            { 
-                model: User,
-                attributes: ['id', 'firstName', 'lastName']
+    if (user) {
+        const reviews = await Review.findAll({
+            where: {
+                userId: user.id
             },
-            {
-                model: Spot,
-                // attributes: {
-                //     exclude: ['description', 'createdAt', 'updatedAt']
-                // }
-            },
-            {
-                model: ReviewImage,
-                attributes: ['id', 'url']
+            include: [
+                {
+                    model: User,
+                    attributes: ['id', 'firstName', 'lastName'],
+                },
+                {
+                    model: Spot,
+                    include: [
+                        {
+                            model: SpotImage,
+                            attributes: ["url"]
+                        }
+                    ],
+                    attributes: { exclude: ['description', 'createdAt', 'updatedAt'] },
+                },
+                {
+                    model: ReviewImage,
+                    attributes: ['id', 'url']
+                }
+            ],
+        })
+        if (!reviews.length) {
+            return res.status(404).json({
+                message: "Reviews couldn't be found"
+            })
+        }
+        if (!user) {
+            return res.status(401).json({
+                message: "Authentication required"
+            })
+        }
+        let reviewList = [];
+
+        reviews.forEach(review => {
+            reviewList.push(review.toJSON())
+        })
+
+
+        reviewList.forEach(review => {
+            if(review.Spot.Images[0].preview) {
+                review.Spot.previewImage = review.Spot.Images[0].url
             }
-        ]
-    });
+            delete review.Spot.Images
+        })
 
-    const Reviews = [];
-
-    reviews.forEach(review => {
-        Reviews.push(review.toJSON())
-    });
-
-    Reviews.forEach(review => {
-        review.ReviewImages.forEach(image => {
-            if(image.preview === true) {
-                review.Spot.previewImage = image.url
+        reviewList.forEach(review => {
+            if (!review.Images.length) {
+                review.ReviewImages = "No Review Images available"
+            } else {
+                review.ReviewImages = review.Images;
             }
-        });
-        delete review.Spot.SpotImage;
-        //console.log(review.ReviewImages)
-
-    });
-
-    res.json(Reviews)
+            delete review.Images
+        })
+        res.json({ Reviews: reviewList })
+    }
 });
 
 
