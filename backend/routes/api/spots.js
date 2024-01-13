@@ -6,6 +6,7 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot } = require('../../db/models');
 const { Review } = require('../../db/models');
 const { SpotImage } = require('../../db/models');
+const { ReviewImage } = require('../../db/models');
 const { User } = require('../../db/models');
 
 
@@ -309,6 +310,45 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
             message: "Successfully deleted"
         }
     )
+});
+
+
+//Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', async (req, res, next) => {
+    const spot = await Spot.findByPk(req.params.spotId);
+
+    if(!spot) {
+        return res.status(404).json(
+            {
+                message: "Spot couldn't be found"
+            }
+        )
+    };
+
+    const spotReviews = await Review.findAll({
+        where: {
+            spotId: req.params.spotId
+        },
+        include: [
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id', 'url']
+            }
+        ]
+    });
+
+    const Reviews = [];
+
+    spotReviews.forEach(review => {
+        Reviews.push(review.toJSON())
+    });
+
+    return res.json(Reviews)
+
 });
 
 module.exports = router;
