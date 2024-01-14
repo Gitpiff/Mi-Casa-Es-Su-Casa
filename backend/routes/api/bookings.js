@@ -11,6 +11,12 @@ const router = express.Router();
 router.get('/current', requireAuth, async (req, res, next) => {
     const { user } = req;
 
+    if (!user) {
+        return res.status(401).json({
+            message: "Authentication required"
+        })
+    };
+
     
     const bookings = await Booking.findAll({
         where: {
@@ -30,6 +36,12 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         ]
     });
+
+    if (!bookings.length) {
+        return res.status(404).json({
+            message: "Bookings couldn't be found"
+        })
+    };
     
     const bookingsArr = [];
     const Bookings = [];
