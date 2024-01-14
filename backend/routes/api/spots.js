@@ -361,7 +361,7 @@ router.get('/:spotId', async (req, res) => {
                 updatedAt: spot.updatedAt,
                 numReviews: await spot.countReviews(),
                 avgStarRating: total / spot.Reviews.length,
-                SpotImages: spot.SpotImages,
+                SpotImages: spot.SpotImages.length !== 0 ? spot.SpotImages : "No spot images found",
                 Owner: spot.User
             }
             return res.json(spotObj)
