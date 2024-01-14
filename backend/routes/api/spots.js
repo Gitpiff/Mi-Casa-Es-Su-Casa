@@ -44,6 +44,8 @@ const validateSpot = [
         .custom(val => {
             if(val <= 0) {
                 throw new Error('Price per day must be greater than 0')
+            } else {
+                return val
             }
         }),
         //.withMessage('Price per day must be greater than 0'),
@@ -724,7 +726,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
                     endDate: "endDate cannot be on or before startDate"
                 }
             })
-        }
+        };
 
         const spotId = Number(req.params.spotId)
 
