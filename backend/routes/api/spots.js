@@ -41,8 +41,12 @@ const validateSpot = [
         .exists({ checkFalsy: true })
         .notEmpty()
         .withMessage('Price per day is required')
-        .isFloat({ min: 0 })
-        .withMessage('Price per day must be greater than 0'),
+        .custom(val => {
+            if(val <= 0) {
+                throw new Error('Price per day must be greater than 0')
+            }
+        }),
+        //.withMessage('Price per day must be greater than 0'),
         handleValidationErrors
 ];
 const validateQuery = [
@@ -373,7 +377,7 @@ router.get('/:spotId', async (req, res) => {
 });
 
 //Create a spot
-router.post('/', requireAuth, async  (req, res, next) => {
+router.post('/', requireAuth, validateSpot, async  (req, res, next) => {
     const { user } = req;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
