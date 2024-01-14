@@ -447,7 +447,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
 
 //Edit a Spot
-router.put('/:spotId', requireAuth, async (req, res, next) => {
+router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     const { user } = req;
     const spotId = req.params.spotId;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
