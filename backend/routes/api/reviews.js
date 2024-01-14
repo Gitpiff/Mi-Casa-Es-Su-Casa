@@ -89,7 +89,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 //Add an Image to a Review based on the Review's id
-router.post('/:reviewId/image', requireAuth, async(req, res, next) => {
+router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
     const { url } = req.body;
     const reviewId = Number(req.params.reviewId);
 

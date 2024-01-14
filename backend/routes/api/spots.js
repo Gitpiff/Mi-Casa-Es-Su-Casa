@@ -458,6 +458,14 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
         })
     };
 
+    if(!spot) {
+        res.status(404).json(
+            {
+                message: "Spot could not be found"
+            }
+        )
+    };
+    
     if (user.id !== spot.ownerId) {
         return res.status(403).json({
             "message": "Forbidden"
@@ -465,13 +473,6 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
     };
 
 
-    if(!spot) {
-        res.status(404).json(
-            {
-                message: "Spot could not be found"
-            }
-        )
-    }
 
    spot.set({
         address: address,
