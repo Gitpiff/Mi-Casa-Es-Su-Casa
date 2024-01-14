@@ -58,7 +58,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
     if (!reviews.length) {
         return res.status(404).json({
-            message: "Bookings couldn't be found"
+            message: "No reviews could be found"
         })
     };
 

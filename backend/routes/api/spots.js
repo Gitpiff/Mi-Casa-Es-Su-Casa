@@ -282,6 +282,14 @@ router.get('/current', requireAuth, async (req, res) => {
             }
         ]
     });
+
+    if (!spots.length) {
+        return res.status(404).json({
+            message: "No spots could be found"
+        })
+    };
+
+
     const spotObj = {};
     const spotsList = [];
 
@@ -399,6 +407,10 @@ router.post('/', requireAuth, validateSpot, async  (req, res, next) => {
         description,
         price
     });
+
+    newSpot.lat = Number(newSpot.lat);
+    newSpot.lng = Number(newSpot.lng);
+    newSpot.price = Number(newSpot.price);
 
     return res.json(newSpot)
 
