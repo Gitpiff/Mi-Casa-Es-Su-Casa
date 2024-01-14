@@ -465,6 +465,12 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     const spotId = req.params.spotId;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
+    if (user.id !== spot.ownerId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    };
+    
     const spot = await Spot.findByPk(spotId);
 
     if (!user) {
@@ -481,11 +487,6 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
         )
     };
     
-    if (user.id !== spot.ownerId) {
-        return res.status(403).json({
-            message: "Forbidden"
-        })
-    };
 
 
 
