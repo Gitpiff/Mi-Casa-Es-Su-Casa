@@ -483,7 +483,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     
     if (user.id !== spot.ownerId) {
         return res.status(403).json({
-            "message": "Forbidden"
+            message: "Forbidden"
         })
     };
 
