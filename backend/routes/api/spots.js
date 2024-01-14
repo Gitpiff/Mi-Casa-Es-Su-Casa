@@ -263,6 +263,12 @@ router.get('/', async (req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
 
+    if (!user) {
+        return res.status(401).json({
+            message: "Authentication required"
+        })
+    };
+
     const spots = await Spot.findAll({
         where: {
             ownerId: user.id
@@ -428,10 +434,24 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
 //Edit a Spot
 router.put('/:spotId', requireAuth, async (req, res, next) => {
+    const { user } = req;
     const spotId = req.params.spotId;
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const spot = await Spot.findByPk(spotId);
+
+    if (!user) {
+        return res.status(401).json({
+            message: "Authentication required"
+        })
+    };
+
+    if (user.id !== spot.ownerId) {
+        return res.status(403).json({
+            "message": "Forbidden"
+        })
+    };
+
 
     if(!spot) {
         res.status(404).json(
