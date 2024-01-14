@@ -420,8 +420,21 @@ router.post('/', requireAuth, validateSpot, async  (req, res, next) => {
 
 //Add Image to a post based on the Spot's id
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+    const { user } = req;
     const spotId = req.params.spotId;
     const { url, preview } = req.body;
+
+    if (!user) {
+        return res.status(401).json({
+            message: "Authentication required"
+        })
+    };
+
+    if (user.id !== spot.ownerId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    };
 
     //Find spot
     const spot = await Spot.findByPk(spotId);
