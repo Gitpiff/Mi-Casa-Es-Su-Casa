@@ -339,7 +339,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 //Get details of a Spot from an id
 router.get('/:spotId', async (req, res) => {
-   const { spotId } = req.params;
+   const spotId = Number(req.params.spotId);
 
     console.log(spotId)
     try {
@@ -372,7 +372,7 @@ router.get('/:spotId', async (req, res) => {
 
             const spotObj = {
                 id: spot.id,
-                ownerId: spot.ownerId,
+                ownerId: +spot.ownerId,
                 address: spot.address,
                 city: spot.city,
                 state: spot.state,
@@ -406,7 +406,7 @@ router.post('/', requireAuth, validateSpot, async  (req, res, next) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     const newSpot = await Spot.create({
-        ownerId: user.id,
+        ownerId: +user.id,
         address,
         city,
         state,
@@ -430,16 +430,21 @@ router.post('/', requireAuth, validateSpot, async  (req, res, next) => {
 
 //Add Image to a post based on the Spot's id
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
-    const spotId = Number(req.params.spotId);
-    const spot = await Spot.findByPk(spotId);
+    const { url, preview } = req.body;
+    const { spotId } = req.params;
+    const userId = Number(req.user.id);
+    let spot = await Spot.findByPk(spotId);
 
-    if (!spot) return res.status(404).json({ message: "Spot couldn't be found" });
-
-    if (req.user.id !== spot.ownerId) {
-        return res.status(403).json({ message: 'Forbidden' });
+    if(!(await Spot.findByPk(spotId))) {
+        return res.status(404).json({ message: "Spot couldn't be found" });
     };
 
-    const { url, preview } = req.body;
+    if (spot.ownerId !== userId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        })
+    };
+    
 
     const newImage = await SpotImage.create({
         spotId: spotId,
@@ -463,13 +468,15 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     const spotId = Number(req.params.spotId);
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
+    
+    const spot = await Spot.findByPk(spotId);
+    
     if (user.id !== spot.ownerId) {
         return res.status(403).json({
             message: "Forbidden"
         })
     };
 
-    const spot = await Spot.findByPk(spotId);
 
     if (!user) {
         return res.status(401).json({
