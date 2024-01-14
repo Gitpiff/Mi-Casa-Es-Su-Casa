@@ -421,7 +421,7 @@ router.post('/', requireAuth, validateSpot, async  (req, res, next) => {
 //Add Image to a post based on the Spot's id
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     const { user } = req;
-    const spotId = req.params.spotId;
+    const spotId = Number(req.params.spotId);
     const { url, preview } = req.body;
 
     if (!user) {
@@ -462,7 +462,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 //Edit a Spot
 router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
     const { user } = req;
-    const spotId = req.params.spotId;
+    const spotId = Number(req.params.spotId);
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
     if (user.id !== spot.ownerId) {
@@ -470,7 +470,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
             message: "Forbidden"
         })
     };
-    
+
     const spot = await Spot.findByPk(spotId);
 
     if (!user) {
@@ -511,7 +511,7 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res, next) => {
 
 //Delete a spot
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
-    const spotId = req.params.spotId;
+    const spotId = Number(req.params.spotId);
 
     const spot = await Spot.findByPk(spotId);
 
@@ -535,7 +535,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
 //Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async (req, res, next) => {
-    const spot = await Spot.findByPk(req.params.spotId);
+    const spot = await Spot.findByPk(Number(req.params.spotId));
 
     if(!spot) {
         return res.status(404).json(
@@ -592,7 +592,7 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, ne
     const { review, stars } = req.body;
     const errRes = {};
 
-    const spot = await Spot.findByPk(req.params.spotId, {
+    const spot = await Spot.findByPk(Number(req.params.spotId), {
         include: [
             {
                 model: Review
