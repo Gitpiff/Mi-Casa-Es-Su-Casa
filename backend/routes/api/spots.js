@@ -221,22 +221,30 @@ router.get('/', async (req, res) => {
     });
 
     Spots.forEach(spot => {
-        let total = 0;
+        spot.lat = Number.parseFloat(spot.lat);
+        spot.lng = Number.parseFloat(spot.lng);
+        spot.price = Number.parseFloat(spot.price);
+        spot.avgRating = 'No reviews found';
 
         spot.Reviews.forEach(review => {
-            total += review.stars;
+
+            if (review.stars) {
+                let totalStars = spot.Reviews.reduce((sum, review) => (sum + review.stars), 0)
+                avgStars = totalStars / spot.Reviews.length
+                spot.avgRating = avgStars;
+            }
         });
 
-        spot.avgRating = total / spot.Reviews.length;  
-        delete spot.Reviews;   //Keeps it from showing in the res.json
         
         //previewImage
+        spot.previewImage = "No preview images available";
         spot.SpotImages.forEach(image => {
         if (image.preview === true) {
             spot.previewImage = image.url
         }
     });   
     delete spot.SpotImages;
+    delete spot.Reviews;
         
     });
 
@@ -268,27 +276,35 @@ router.get('/current', requireAuth, async (req, res) => {
     const spotsList = [];
 
     spots.forEach(spot => {
-        spotsList.push(spot.toJSON())
+        spotsList.push(spot.toJSON())   //Conver to JSON so we can add attributes
     });
 
     spotsList.forEach(spot => {
-        spot.lat = Number(spot.lat);
-        spot.lng = Number(spot.lng);
-        spot.price = Number(spot.price);
+        spot.lat = Number.parseFloat(spot.lat);
+        spot.lng = Number.parseFloat(spot.lng);
+        spot.price = Number.parseFloat(spot.price);
+        spot.avgRating = 'No reviews found';
 
-        let total = 0;
         spot.Reviews.forEach(review => {
-            total += review.stars;
-        });
-        spot.avgRating = total / spot.Reviews.length;
-        delete spot.Reviews;
 
-        spot.SpotImages.forEach(image => {
-            if (image.preview === true) {
-                spot.previewImage = image.url
+            if (review.stars) {
+                let totalStars = spot.Reviews.reduce((sum, review) => (sum + review.stars), 0)
+                avgStars = totalStars / spot.Reviews.length
+                spot.avgRating = avgStars;
             }
         });
-        delete spot.SpotImages;
+
+        
+        //previewImage
+        spot.previewImage = "No preview images available";
+        spot.SpotImages.forEach(image => {
+        if (image.preview === true) {
+            spot.previewImage = image.url
+        }
+    });   
+    delete spot.SpotImages;
+    delete spot.Reviews;
+        
     });
 
     spotObj.Spots = spotsList;
