@@ -313,7 +313,7 @@ router.get('/current', requireAuth, async (req, res) => {
                 }
             });
 
-            delete spot.Images;
+            delete spot.spotImages;
             delete spot.Reviews;
         });
 
