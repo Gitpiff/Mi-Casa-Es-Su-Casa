@@ -316,7 +316,7 @@ router.get('/current', requireAuth, async (req, res) => {
                 }
             });
 
-            delete spot.spotImages;
+            delete spot.SpotImages;
             delete spot.Reviews;
         });
 
