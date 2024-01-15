@@ -133,7 +133,9 @@ const validateQuery = [
 //Get All Spots
 router.get('/', validateQuery, async (req, res) => {
 
-    let { page, size, maxLat, minLat, minLng, maxLng } = req.query
+    let { maxLat, minLat, minLng, maxLng } = req.query
+    let page = Number(req.query.page)
+    let size = Number(req.query.size)
     let minPrice = req.query.minPrice
     let maxPrice = req.query.maxPrice
     const results = {}
