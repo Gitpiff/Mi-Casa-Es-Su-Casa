@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const { Op } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
@@ -246,7 +247,7 @@ router.get('/', validateQuery, async (req, res) => {
             }
         });
 
-        delete spot.Images;
+        delete spot.SpotImages;
         delete spot.Reviews;
     });
 
