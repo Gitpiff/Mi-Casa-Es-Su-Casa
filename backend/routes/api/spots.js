@@ -307,7 +307,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
             spot.previewImage = "No preview images available";
 
-            spot.Images.forEach(image => {
+            spot.SpotImages.forEach(image => {
                 if (image.preview) {
                     spot.previewImage = image.url
                 }
