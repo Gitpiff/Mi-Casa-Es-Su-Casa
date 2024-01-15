@@ -130,12 +130,12 @@ const validateQuery = [
 ];
 
 //Get All Spots
-router.get('/', async (req, res) => {
+router.get('/', validateQuery, async (req, res) => {
 
     let { page, size, maxLat, minLat, minLng, maxLng } = req.query
     let minPrice = req.query.minPrice
     let maxPrice = req.query.maxPrice
-    const spotsObject = {}
+    const results = {}
 
     const pagination = {}
     if (page || size) {
@@ -204,29 +204,26 @@ router.get('/', async (req, res) => {
     };
 
     const spots = await Spot.findAll({
-        include: [ 
-            { 
+        include: [
+            {
                 model: Review
-            }, 
-            { 
-                model: SpotImage,
-                where: {
-                    preview: true
-                },
-                required: false //prevents inner join
             },
+            {
+                model: SpotImage
+            }
         ],
-        // where,
-        // ...pagination
-    });
+        where,
+        ...pagination
+    })
 
-    let Spots = [];
+    let spotsList = [];
 
     spots.forEach(spot => {
-        Spots.push(spot.toJSON())   //Conver to JSON so we can add attributes
+        spotsList.push(spot.toJSON());
     });
 
-    Spots.forEach(spot => {
+    spotsList.forEach(spot => {
+
         spot.lat = Number.parseFloat(spot.lat);
         spot.lng = Number.parseFloat(spot.lng);
         spot.price = Number.parseFloat(spot.price);
@@ -241,24 +238,26 @@ router.get('/', async (req, res) => {
             }
         });
 
-        
-        //previewImage
         spot.previewImage = "No preview images available";
+
         spot.SpotImages.forEach(image => {
-        if (image.preview === true) {
-            spot.previewImage = image.url
-        }
-    });   
-    delete spot.SpotImages;
-    delete spot.Reviews;
-        
+            if (image.preview) {
+                spot.previewImage = image.url
+            }
+        });
+
+        delete spot.Images;
+        delete spot.Reviews;
     });
 
-    spotsObject.Spots = Spots;
-    if(page) spotsObject.page = page;
-    if(size) spotsObject.size = size;
+    if (spotsList.length === 0) return res.status(400).json({ message: "No spots found" });
 
-    res.json(spotsObject);
+    results.Spots = spotsList
+    if (page) results.page = page;
+    if (size) results.size = size;
+
+
+    return res.json(results);
 });
 
 
@@ -267,71 +266,64 @@ router.get('/', async (req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
 
-    if (!user) {
-        return res.status(401).json({
-            message: "Authentication required"
-        })
-    };
+    if (user) {
 
-    const spots = await Spot.findAll({
-        where: {
-            ownerId: user.id
-        },
-        include: [
-            {
-                model: Review
-            },
-            {
-                model: SpotImage
+        const spots = await Spot.findAll({
+            include: [
+                {
+                    model: Review
+                },
+                {
+                    model: SpotImage,
+                    attributes: ['url', 'preview']
+                }
+            ],
+            where: {
+                ownerId: user.id
             }
-        ]
-    });
-
-    if (!spots.length) {
-        return res.status(404).json({
-            message: "No spots could be found"
         })
-    };
 
 
-    const spotObj = {};
-    const spotsList = [];
+        let spotsList = [];
 
-    spots.forEach(spot => {
-        spotsList.push(spot.toJSON())   //Conver to JSON so we can add attributes
-    });
-
-    spotsList.forEach(spot => {
-        spot.lat = Number.parseFloat(spot.lat);
-        spot.lng = Number.parseFloat(spot.lng);
-        spot.price = Number.parseFloat(spot.price);
-        spot.avgRating = 'No reviews found';
-
-        spot.Reviews.forEach(review => {
-
-            if (review.stars) {
-                let totalStars = spot.Reviews.reduce((sum, review) => (sum + review.stars), 0)
-                avgStars = totalStars / spot.Reviews.length
-                spot.avgRating = avgStars;
-            }
+        spots.forEach(spot => {
+            spotsList.push(spot.toJSON());
         });
 
-        
-        //previewImage
-        spot.previewImage = "No preview images available";
-        spot.SpotImages.forEach(image => {
-        if (image.preview === true) {
-            spot.previewImage = image.url
+        spotsList.forEach(spot => {
+
+            spot.lat = Number.parseFloat(spot.lat);
+            spot.lng = Number.parseFloat(spot.lng);
+            spot.price = Number.parseFloat(spot.price);
+            spot.avgRating = 'No reviews found'
+
+            spot.Reviews.forEach(review => {
+                if (review.stars) {
+                    let totalStars = spot.Reviews.reduce((sum, review) => (sum + review.stars), 0)
+                    avgStars = totalStars / spot.Reviews.length
+                    spot.avgRating = avgStars;
+                }
+            });
+
+            spot.previewImage = "No preview images available";
+
+            spot.Images.forEach(image => {
+                if (image.preview) {
+                    spot.previewImage = image.url
+                }
+            });
+
+            delete spot.Images;
+            delete spot.Reviews;
+        });
+
+        if (spotsList.length === 0) {
+            return res.json({ Spots: "No spots found" })
+        } else {
+            return res.json({ Spots: spotsList });
         }
-    });   
-    delete spot.SpotImages;
-    delete spot.Reviews;
-        
-    });
 
-    spotObj.Spots = spotsList;
-
-    return res.json(spotObj)
+    }
 });
 
 
@@ -531,19 +523,14 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
 //Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async (req, res, next) => {
-    const spot = await Spot.findByPk(Number(req.params.spotId));
+    const spotId = Number(req.params.spotId);
+    const spot = await Spot.findByPk(spotId);
 
-    if(!spot) {
-        return res.status(404).json(
-            {
-                message: "Spot couldn't be found"
-            }
-        )
-    };
+    if (!spot) return res.status(404).json({ message: "Spot couldn't be found" });
 
-    const spotReviews = await Review.findAll({
+    const reviews = await Review.findAll({
         where: {
-            spotId: req.params.spotId
+            spotId: spotId
         },
         include: [
             {
@@ -552,18 +539,27 @@ router.get('/:spotId/reviews', async (req, res, next) => {
             },
             {
                 model: ReviewImage,
-                attributes: ['id', 'url']
             }
         ]
     });
 
-    const Reviews = [];
+    const reviewsList = [];
 
-    spotReviews.forEach(review => {
-        Reviews.push(review.toJSON())
+    reviews.forEach(review => {
+        reviewsList.push(review.toJSON());
     });
 
-    return res.json(Reviews)
+    reviewsList.forEach(review => {
+
+        if (review.ReviewImages.length === 0)
+            review.ReviewImages = "No review images found"
+    });
+
+    if (reviewsList.length === 0) {
+        return res.json({ Reviews: "No reviews found" })
+    } else {
+        return res.json({ Reviews: reviewsList });
+    }
 
 });
 

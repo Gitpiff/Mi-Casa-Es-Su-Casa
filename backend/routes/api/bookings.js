@@ -75,7 +75,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     Bookings.push(userBookings)
     });
 
-    res.json(Bookings)
+    res.json({Bookings})
 });
 
 

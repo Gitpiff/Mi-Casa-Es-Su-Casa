@@ -43,65 +43,103 @@ module.exports = (sequelize, DataTypes) => {
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Street address is required'
+        }
+      }
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'City is required'
+        }
+      }
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'State is required'
+        }
+      }
     },
     country: {
       type: DataTypes.STRING,
-      allowNull: false
-    },
-    lat: {
-      type: DataTypes.DECIMAL(3,7),
       allowNull: false,
       validate: {
-        min: - 90,
-        max: 90
+        notNull: {
+          msg: 'Country is required'
+        }
+      }
+    },
+    lat: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        min: {
+          args: [-90],
+          msg: 'Latitude is not valid'
+        },
+        max: {
+          args: [90],
+          msg: 'Latitude is not valid'
+        }
       }
     },
     lng: {
-      type: DataTypes.DECIMAL(3,7),
+      type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        min: - 180,
-        max: 180
+        min: {
+          args: [-180],
+          msg: 'Longitude is not valid'
+        },
+        max: {
+          args: [180],
+          msg: 'Longitude is not valid'
+        }
       }
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: {
+          args: [1, 50],
+          msg: 'Name must be less than 50 characters'
+        }
+      }
     },
     description: {
-      type: DataTypes.TEXT,
-      allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Description is required'
+        }
+      }
     },
     price: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DECIMAL,
       allowNull: false,
-      // validate: {
-      //   min: 1
-      // }
-    },
-    createdAt:  {
-      type: DataTypes.DATE
-    },
-    updatedAt:  {
-      type: DataTypes.DATE
-    },
+      validate: {
+        notNull: {
+          msg: 'Price per day is required'
+        },
+        min: {
+          args: [1],
+          msg: 'Price per day is invalid'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Spot',
-    // defaultScope: {
-    //   attributes: {
-    //     exclude: ['createdAt', 'updatedAt']
-    //   }
-    // }
   });
   return Spot;
 };

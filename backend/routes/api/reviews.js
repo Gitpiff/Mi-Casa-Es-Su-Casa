@@ -90,55 +90,51 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 //Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, async(req, res, next) => {
-    const { url } = req.body;
-    const reviewId = Number(req.params.reviewId);
-
-    const review = await Review.findByPk(reviewId, {
-        include: [
-            {
-                model: ReviewImage
-            }
-        ]
-    });
-
-    const max = await review.countReviewImages();
-
-    if(max >= 10) {
-        return res.status(403).json(
-            {
-                message: 'Maximum number of images for this resource was reached'
-            }
-        )
-    };
-
-    const newImage = await ReviewImage.create({
-        reviewId: review.id,
-        url
-    });
-
-    return res.json({id: newImage.reviewId, url: newImage.url})
-});
-
-
-//Edit a Review
-router.put('/:reviewId', requireAuth, validateReview, async(req, res, next) => {
     const reviewId = Number(req.params.reviewId);
     const review = await Review.findByPk(reviewId);
 
-    if(!review) {
-        return res.status(404).json(
-            {
-                message: "Review couldn't be found"
-            }
-        )
-    };
+    if (!review) return res.status(404).json({ message: "Review couldn't be found" });
 
     if (req.user.id !== review.userId) {
-        return res.status(403).json(
-            {
-                 message: 'Forbidden' 
-            }
-        );
+        return res.status(403).json({ message: 'Forbidden' });
+    };
+
+    const { url } = req.body;
+
+    const images = await ReviewImage.findAll({
+        where: {
+            reviewId
+        }
+    });
+
+    if (images.length < 10) {
+        const newImage = await ReviewImage.create({
+            reviewId,
+            url: url
+        });
+
+        const image = {};
+
+        image.id = newImage.id;
+        image.url = newImage.url;
+
+        return res.json(image)
+    } else {
+        return res.status(403).json({ message: 'Maximum number of images for this resource was reached' });
+    }
+
+
+});
+
+//Edit a Review
+router.put('/:reviewId', requireAuth, validateReview, async (req, res) => {
+    const reviewId = Number(req.params.reviewId);
+    const review = await Review.findByPk(reviewId);
+
+    if (!review) return res.status(404).json({ message: "Review couldn't be found" });
+
+    if (req.user.id !== review.userId) {
+        return res.status(403).json({ message: 'Forbidden' });
     };
 
     review.set({
@@ -149,37 +145,23 @@ router.put('/:reviewId', requireAuth, validateReview, async(req, res, next) => {
     await review.save();
 
     return res.json(review);
-
 });
 
+
 //Delete a Review
-router.delete('/:reviewId', requireAuth, async(req, res, next) => {
+router.delete('/:reviewId', requireAuth, async (req, res) => {
     const reviewId = Number(req.params.reviewId);
     const review = await Review.findByPk(reviewId);
 
-    if(!review) {
-        return res.status(404).json(
-            {
-                message: "Review couldn't be found"
-            }
-        )
-    };
+    if (!review) return res.status(404).json({ message: "Review couldn't be found" });
 
     if (req.user.id !== review.userId) {
-        return res.status(403).json(
-            {
-                 message: 'Forbidden' 
-            }
-        );
+        return res.status(403).json({ message: 'Forbidden' });
     };
 
     await review.destroy();
 
-    return res.json(
-        {
-            message: "Successfully deleted"
-        }
-    )
+    return res.json({ message: "Successfully deleted" });
 });
 
 module.exports = router;
