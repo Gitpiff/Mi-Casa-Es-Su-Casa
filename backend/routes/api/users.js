@@ -32,10 +32,10 @@ const validateSignup = [
         .exists({ checkFalsy: true })
         .isLength({ min: 1 })
         .withMessage('Last Name is required'),
-  check('password')
-    .exists({ checkFalsy: true })
-    .isLength({ min: 6 })
-    .withMessage('Password is required'),
+  // check('password')
+  //   .exists({ checkFalsy: true })
+  //   .isLength({ min: 6 })
+  //   .withMessage('Password is required'),
   handleValidationErrors
 ]
 

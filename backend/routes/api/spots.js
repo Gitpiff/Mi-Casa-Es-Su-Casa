@@ -308,6 +308,10 @@ router.get('/current', requireAuth, async (req, res) => {
                 }
             });
 
+            if (!spot.avgRating) {
+                spot.avgRating = "No ratings available"
+            };
+
             spot.previewImage = "No preview images available";
 
             spot.SpotImages.forEach(image => {
