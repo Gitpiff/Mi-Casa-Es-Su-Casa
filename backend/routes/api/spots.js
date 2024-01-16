@@ -308,9 +308,9 @@ router.get('/current', requireAuth, async (req, res) => {
                 }
             });
 
-            if (!spot.avgRating) {
-                spot.avgRating = "No ratings available"
-            };
+            // if (!spot.avgRating) {
+            //     spot.avgRating = "No ratings available"
+            // };
 
             spot.previewImage = "No preview images available";
 
@@ -384,7 +384,7 @@ router.get('/:spotId', async (req, res) => {
                 createdAt: spot.createdAt,
                 updatedAt: spot.updatedAt,
                 numReviews: await spot.countReviews(),
-                avgStarRating: total / spot.Reviews.length,
+                avgStarRating: spot.Reviews.length === 0 ? 'No reviews found' : total / spot.Reviews.length,
                 SpotImages: spot.SpotImages.length !== 0 ? spot.SpotImages : "No spot images found",
                 Owner: spot.User
             }
