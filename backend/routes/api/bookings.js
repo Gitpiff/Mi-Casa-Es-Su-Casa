@@ -53,7 +53,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     bookingsArr.forEach(booking => {
         booking.Spot.lat = Number.parseFloat(booking.Spot.lat);
         booking.Spot.lng = Number.parseFloat(booking.Spot.lng);
-        booking.Spot.price = Number,parseFloat(booking.Spot.price);
+        booking.Spot.price = Number.parseFloat(booking.Spot.price);
 
         booking.Spot.SpotImages.forEach(image => {
             if (image.preview === true) {
