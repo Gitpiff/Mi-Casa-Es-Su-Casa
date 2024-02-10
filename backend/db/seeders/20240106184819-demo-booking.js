@@ -43,7 +43,7 @@ const demoBookings = [
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await Booking.bulkCreate(demoBookings, { validate: true })
+    await Booking.bulkCreate(options, demoBookings)
     //await queryInterface.bulkInsert(demoBookings, options)
   },
 
