@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as sessionActions from '../../store/session';
 import ProfileButton from "./ProfileButton";
+import './Navigation.css'
 
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
@@ -32,7 +33,7 @@ function Navigation({ isLoaded }) {
         </>
       );
 
-    return ( 
+    return (
        <ul>
         <li>
             <NavLink to="/">Home</NavLink>
