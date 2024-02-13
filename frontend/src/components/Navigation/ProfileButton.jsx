@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { FaUserAstronaut } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
-import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import SignUpFormModal from "../SignupFormModal/SignUpFormPage";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
+import OpenModalMenuItem from "./OpenModalMenuItem";
 
 function ProfileButton({user}) {
     const dispatch = useDispatch();
@@ -32,12 +32,15 @@ function ProfileButton({user}) {
         return () => document.removeEventListener('click', closeMenu);
     }, [showMenu])
 
+    const closeMenu = () => setShowMenu(false);
+
     const ulClassName = "profile-dropdown" + (showMenu ? "" : "hidden");
 
     const logout = (e) => {
         e.preventDefault();
 
         dispatch(sessionActions.logout());
+        closeMenu();
     };
 
     return (
@@ -59,15 +62,17 @@ function ProfileButton({user}) {
                     </>
                 ) : (
                     <>
-                        <li>
-                            <OpenModalButton
-                                buttonText="Log In"
+                        <li style={{cursor: "pointer"}}>
+                            <OpenModalMenuItem
+                                itemText="Log In"
+                                onButtonClick={closeMenu}
                                 modalComponent={<LoginFormModal />}
                             />
                         </li>
-                        <li>
-                            <OpenModalButton
-                                buttonText="Sign Up"
+                        <li style={{cursor: "pointer"}}>
+                            <OpenModalMenuItem
+                                itemText="Sign Up"
+                                onButtonClick={closeMenu}
                                 modalComponent={<SignUpFormModal />}
                             />
                         </li>
