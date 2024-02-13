@@ -36,7 +36,7 @@ export const login = (user) => async (dispatch) => {
         password
       })
     })
-  
+
     const data = await response.json();
     dispatch(setUser(data.user));
     return response
@@ -61,7 +61,7 @@ export const signUp = (user) => async (dispatch) => {
   return response
 }
 
-export const logout = (user) => async (dispatch) => {
+export const logout = () => async (dispatch) => {
   const response = await csrfFetch("/api/session", {
     method: "DELETE"
   })
