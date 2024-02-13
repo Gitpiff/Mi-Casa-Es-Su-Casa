@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSpots } from "../../store/spots";
 import { Link } from "react-router-dom";
+import './Spots.css'
 
 function SpotsList() {
     const dispatch = useDispatch();
@@ -15,22 +16,29 @@ function SpotsList() {
 
     return (
     <>
-        <ul>
-            { spots && spots.map(spot => (
-                <li key={spot.id}>
-                    <Link to={`/spots/${spot.id}`}>
-                        <span>{spot.name}</span>
-                        <img src={spot.previewImage} alt={spot.name} />
-                        <div>
-                            <span>{`${spot.city}, ${spot.state}`}</span>
-                            <span><i className="fa-solid fa-star"/>{spot.avgRating}</span>
-                        </div>
+    <section>
+        <div className="main-container">
+            {
+                spots.map(spot => (
+                    <div key={spot.id}>
+                        <Link to={`/spots/${spot.id}`}>
+                            <span>{spot.name}</span>
+                            <img
+                                src={spot.previewImage}
+                                alt={spot.name}
+                                className="spotImage"
+                            />
+                        </Link>
+                    <div>
+                        <span>{`${spot.city}, ${spot.state}`}</span>
+                        <span>&#9733; {spot.avgRating}</span>
+                    </div>
                         <span>{`${spot.price} night`}</span>
-                    </Link>
-                </li>
-            ))}
-        </ul>
-
+                    </div>
+                ))
+            }
+        </div>
+    </section>
     </>);
 }
 
