@@ -10,13 +10,27 @@ if (process.env.NODE_ENV === 'production') {
 const demoSpotImages = [
   {
     spotId: 1,
-    url: [
-      "https://assets-global.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2372&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2369&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=2274&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "https://assets-global.website-files.com/5dcc7f8c449e597be23356e0/657b5c1f9f39325154e5c2ff_Looking%20Towards%202024%20and%20Beyond%20Blog%20Hero%20image.webp"
-    ],
+    url: "https://assets-global.website-files.com/5dcc7f8c449e597ed83356b8/5faae1191b673c881b077e1f_ogaa-min.png",
+    preview: true
+  },
+  {
+    spotId: 1,
+    url: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2372&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    preview: true
+  },
+  {
+    spotId: 1,
+    url:  "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=2369&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    preview: true
+  },
+  {
+    spotId: 1,
+    url:  "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=2274&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    preview: true
+  },
+  {
+    spotId: 1,
+    url:  "https://assets-global.website-files.com/5dcc7f8c449e597be23356e0/657b5c1f9f39325154e5c2ff_Looking%20Towards%202024%20and%20Beyond%20Blog%20Hero%20image.webp",
     preview: true
   },
   {
