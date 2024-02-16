@@ -28,7 +28,7 @@ function SpotDetails() {
                 <div>
                     {spot.SpotImages && spot.SpotImages.map(image => (
                         image.preview &&
-                        <img style={{height: "200px", width: "250px"}} key={image.id} src={image.url} />
+                        <img style={{height: "200px", width: "300px"}} key={image.id} src={image.url} />
                     ))}
                 </div>
                 <h3>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</h3>
@@ -41,11 +41,13 @@ function SpotDetails() {
                 </div>
                 <button onClick={() => alert("Feature coming soon")}>Reserve</button>
                 <div>
+                    {/* If more than One Review display Reviews instead of Review */}
                     {spot.numReviews && spot.numReviews > 1 &&
                     <span>{spot.numReviews} Reviews </span>
                     }
-                    {spot.numReviews === 1 &&
-                    <span>{spot.numReviews} Review </span>
+                    {
+                        spot.numReviews === 1 && 
+                        <span>1 Review</span>
                     }
                 </div>
             </div>
