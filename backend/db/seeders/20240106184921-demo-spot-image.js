@@ -35,7 +35,27 @@ const demoSpotImages = [
   },
   {
     spotId: 2,
-    url: "https://unsplash.com/photos/rectangular-brown-wooden-table-placed-beside-brown-wooden-armless-chair-inside-dim-light-room-aVW2nU765Nk",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/XcelEnergyCenteroverview.jpg/640px-XcelEnergyCenteroverview.jpg",
+    preview: true
+  },
+  {
+    spotId: 2,
+    url: "https://i0.wp.com/zonecoverage.com/wp-content/uploads/2020/11/2008-RNC-1-scaled.jpg?fit=800%2C532&ssl=1",
+    preview: true
+  },
+  {
+    spotId: 2,
+    url: "https://saint-paul-2022.s3.amazonaws.com/imager/files_idss_com/C17/39b802cd-7736-4070-8cef-8d11a2296177/bba07aec-087e-46db-840d-c303ab4412d3_2a23813dca470163f0b2610639f888f1.jpg",
+    preview: true
+  },
+  {
+    spotId: 2,
+    url: "https://www.rateyourseats.com/shared/Xcel-Energy-Center-Section-230-Row-6-on-9-30-2017f2.jpg",
+    preview: true
+  },
+  {
+    spotId: 2,
+    url: "https://meyersound.com/wp-content/uploads/2022/11/7_xcel_energy_center.jpg",
     preview: true
   },
   {
