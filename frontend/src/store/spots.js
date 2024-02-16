@@ -38,7 +38,7 @@ export const getSpot = (spotId) =>  async (dispatch) => {
     }
 }
 
-
+//Reducer
 const spotsReducer = (state = {}, action) => {
     switch (action.type) {
         case LOAD_SPOTS:{
