@@ -31,9 +31,10 @@ function SpotsList() {
                         </Link>
                     <div>
                         <span>{`${spot.city}, ${spot.state}`}</span>
-                        <span>&#9733; {spot.avgRating}</span>
+                        <span>&#9733; {parseFloat(spot.avgRating).toFixed(2)}</span>
+                        {/* {console.log(typeof(spot.avgRating))} */}
                     </div>
-                        <span>{`${spot.price} night`}</span>
+                        <span>{`$${parseFloat(spot.price).toFixed(2)} night`}</span>
                     </div>
                 ))
             }

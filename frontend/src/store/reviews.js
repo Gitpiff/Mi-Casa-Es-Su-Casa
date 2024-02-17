@@ -3,7 +3,7 @@ import { csrfFetch } from "./csrf";
 const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS';
 
 //Actions
-const loadReviews = (reviews, spotId) => {
+const loadSpotReviews = (reviews, spotId) => {
     return {
         type: LOAD_REVIEWS,
         reviews,
@@ -13,11 +13,11 @@ const loadReviews = (reviews, spotId) => {
 
 //Thunks
 export const getSpotReviews = (spotId) => async (dispatch) => {
-    const response = await fetch(`api/spots/${spotId}/reviews`)
-
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`)
+    console.log(response)
     if (response.ok) {
         const spotReviews = await response.json();
-        dispatch(loadReviews(spotReviews, spotId));
+        return dispatch(loadSpotReviews(spotReviews, spotId));
     } else {
         const errors = await response.json();
         return errors
@@ -28,12 +28,12 @@ export const getSpotReviews = (spotId) => async (dispatch) => {
 const reviewsReducer = (state ={}, action) => {
     switch (action.type) {
         case LOAD_REVIEWS: {
-            const reviewState = {...state}
+            const allReviews = {}
             if (action.reviews.Reviews !== "New") {
                 action.reviews.Reviews.forEach(review => {
-                    reviewState[review.id] = review
+                    allReviews[review.id] = review
                 })
-                return reviewState
+                return allReviews
             }
         }
         default: 
