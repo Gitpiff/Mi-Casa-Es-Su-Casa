@@ -45,7 +45,7 @@ function ProfileButton({user}) {
 
     return (
        <>
-            <button onClick={toggleMenu}>
+            <button style={{cursor: "pointer"}} onClick={toggleMenu}>
                 <FaUserAstronaut />
             </button>
             <ul className={ulClassName} ref={ulRef}>

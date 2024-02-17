@@ -13,7 +13,7 @@ function Navigation({ isLoaded }) {
             <NavLink to="/"><FcHome />Mi Casa Es Su Casa</NavLink>
         </li>
         {isLoaded && (
-          <li>
+          <li >
             <ProfileButton user={sessionUser} />
           </li>
         )}
