@@ -13,9 +13,14 @@ function Navigation({ isLoaded }) {
             <NavLink to="/"><FcHome />Mi Casa Es Su Casa</NavLink>
         </li>
         {isLoaded && (
-          <li >
-            <ProfileButton user={sessionUser} />
-          </li>
+          <div>
+            <li>
+              {sessionUser && <NavLink to='/spots/new' >Create a New Spot</NavLink>}
+            </li>
+            <li >
+              <ProfileButton user={sessionUser} />
+            </li>
+          </div>
         )}
        </ul>
     );

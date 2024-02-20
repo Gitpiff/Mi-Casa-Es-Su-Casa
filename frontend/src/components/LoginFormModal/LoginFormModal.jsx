@@ -26,11 +26,26 @@ function LoginFormModal() {
             })
     };
 
+    const demoUser = (e) => {
+        e.preventDefault();
+
+        return dispatch(
+            sessionActions.login(
+                {
+                    credential: "Demo-Lition",
+                    password: "password"
+                }
+            )
+        )
+        .then(closeModal)
+    }
+
 
     return (
         <>
             <h1>Log In</h1>
             <form onSubmit={handleSubmit}>
+                {errors.credential && <h4 style={{color: "red"}}>{errors.credential}</h4>}
                 <label>
                     Username or Email
                     <input
@@ -44,14 +59,20 @@ function LoginFormModal() {
                 <label>
                     Password
                     <input
-                        type="text"
+                        type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </label>
-                {errors.credential && <p>{errors.credential}</p>}
-                <button type="submit">Log in</button>
+
+                <button 
+                    type="submit"
+                    disabled={credential.length < 4 || password.length < 6}
+                >
+                    Log in
+                </button>
+                <button type="submit" onClick={demoUser}>Demo User</button>
             </form>
         </>
      );
