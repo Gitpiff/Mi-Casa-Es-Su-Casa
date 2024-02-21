@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { getSpot } from "../../store/spots";
 import SpotReviews from "../SpotReviews";
 import { getSpotReviews } from "../../store/reviews";
+import OpenModalButton from "../OpenModalButton"
+import CreateReviewModal from "../SpotReviews/CreateReviewModal";
 
 function SpotDetails() {
     const dispatch = useDispatch();
@@ -53,24 +55,39 @@ function SpotDetails() {
                 </div>
                 <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
                 <div>
+                {(sessionUser && spot.numReviews === 0 && sessionUser.id !== spot.ownerId) &&
+                        <>
+                           <OpenModalButton
+                                buttonText="Post Your Review"
+                                modalComponent={<CreateReviewModal spotId={spotId}/>}
+                            />
+                            <p>Be the first to post a review!</p>
+                        </>}
                     {/* If more than One Review display Reviews instead of Review */}
                     {
                         spot.numReviews === 1 && 
-                        <span>1 Review</span>
+                        <>
+                            <span>1 Review</span>
+                            <OpenModalButton
+                                buttonText="Post Your Review"
+                                modalComponent={<CreateReviewModal spotId={spotId}/>}
+                            />
+                        </>
                     }
                     {spot.numReviews && spot.numReviews > 1 &&
-                    <span>{spot.numReviews} Reviews </span>
+                    <>
+                        <span>{spot.numReviews} Reviews </span>
+                        <OpenModalButton
+                                buttonText="Post Your Review"
+                                modalComponent={<CreateReviewModal spotId={spotId}/>}
+                            />
+                    </>
                     }
                     {
                         spot.numReviews >= 1 && <SpotReviews spotId={spotId} sessionUser={sessionUser} spot={spot}/>
                     }
-                    {
-                        (sessionUser && spot.numReviews === 0 && sessionUser.id !== spot.ownerId) && 
-                            <p>
-                                Be the first to post a review!
-                            </p>
-                    }
-                    {/* <SpotReviews spotId={spotId} sessionUser={sessionUser} spot={spot}/> */}
+
+                    
                 </div>
             </div>
         </section>
