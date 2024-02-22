@@ -65,7 +65,7 @@ function SpotDetails() {
                         </>}
                     {/* If more than One Review display Reviews instead of Review */}
                     {
-                        spot.numReviews === 1 && 
+                        sessionUser && spot.numReviews === 1 && sessionUser.id !== spot.ownerId &&
                         <>
                             <span>1 Review</span>
                             <OpenModalButton
@@ -74,7 +74,8 @@ function SpotDetails() {
                             />
                         </>
                     }
-                    {spot.numReviews && spot.numReviews > 1 &&
+                    {
+                        sessionUser && spot.numReviews && spot.numReviews > 1 && sessionUser.id !== spot.ownerId &&
                     <>
                         <span>{spot.numReviews} Reviews </span>
                         <OpenModalButton

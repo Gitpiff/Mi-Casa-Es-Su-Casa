@@ -3,6 +3,7 @@ import { getSpot } from "./spots";
 
 const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS';
 const CREATE_SPOT_REVIEWS = 'reviews/CREATE_SPOT_REVIEWS';
+const CLEAR_REVIEWS = 'reviews/CLEAR_REVIEWS';
 
 //Actions
 const loadSpotReviews = (reviews, spotId) => {
@@ -23,6 +24,12 @@ const createSpotReview = (review, spotId) => {
 
 
 //Thunks
+export const clearReviews = () => {
+    return {
+        type: CLEAR_REVIEWS
+    }
+}
+
 export const getSpotReviews = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`)
     console.log(response)
@@ -73,6 +80,9 @@ const reviewsReducer = (state ={}, action) => {
         }
         case CREATE_SPOT_REVIEWS: {
             return {...state, [action.review.id]: action.review}
+        }
+        case CLEAR_REVIEWS: {
+            return {}
         }
         default: 
         return state

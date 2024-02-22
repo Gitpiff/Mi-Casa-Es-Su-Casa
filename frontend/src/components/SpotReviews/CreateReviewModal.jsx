@@ -14,8 +14,8 @@ export default function CreateReviewModal({ spotId }) {
     useEffect(() => {
         const errs = {};
 
-        // if (review && review.length < 10) errs.review = 'Review must be 10 characters at minimum';
-        // if (stars === 0) errs.stars = 'Star rating must be between 1 and 5';
+        if (review && review.length < 10) errs.review = 'Review must be 10 characters at minimum';
+        if (stars === 0) errs.stars = 'Star rating must be between 1 and 5';
 
         setErrors(errs)
     }, [review, stars])

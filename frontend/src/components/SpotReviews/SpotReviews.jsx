@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getSpotReviews } from "../../store/reviews";
-import { getSpot } from "../../store/spots";
+import { getSpotReviews, clearReviews } from "../../store/reviews";
 
 function SpotReviews() {
     //Get spotId associated with review
@@ -22,6 +21,10 @@ function SpotReviews() {
 
     useEffect(() => {
         dispatch(getSpotReviews(spotId))
+
+        return () => {
+            dispatch(clearReviews())
+        }
             
     }, [dispatch, spotId])
 
@@ -33,23 +36,32 @@ function SpotReviews() {
     }
 
     return (  
-       <>
-        {
-            reviews.map(review => (
-                <div>
-                    <h3>{review.User.firstName}</h3>
-                    <h3>{getDate(review.createdAt)}</h3>
-                    <span>
-                        {review.review}
-                    </span>
-                </div>
-                // <span>
-                //     {console.log(review.review)}
-                // </span>
-            ))
-        }
-        {/* <h1>SpotReview</h1> */}
-       </>
+        <>
+        {reviews && reviews.map((review) => (
+          <li
+            className="reviewsList"
+            key={review.id}>
+            <span style={{ fontSize: '18px' }}>
+              {sessionUser && sessionUser.id === review.User?.id
+                ? sessionUser.firstName
+                : (review.User?.firstName)
+              }
+  
+            </span>
+            <span style={{ fontSize: '14px', color: 'grey' }}>
+              {review.createdAt &&
+                getDate(review.createdAt)
+              }
+            </span>
+            <span style={{ fontSize: '12px' }}>
+              {review.review}
+            </span>
+              {/* {sessionUser && sessionUser.id === review.User?.id &&
+              <span className="deleteReviewButton"><DeleteReviewButton reviewId={review.id}/></span>
+              } */}
+          </li>
+        ))}
+      </>
     );
 }
 
