@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSpotReviews, clearReviews } from "../../store/reviews";
+import DeleteReviewButton from "./DeleteReviewButton";
 
 function SpotReviews() {
     //Get spotId associated with review
@@ -38,10 +39,11 @@ function SpotReviews() {
     return (  
         <>
         {reviews && reviews.map((review) => (
-          <li
+            <li
             className="reviewsList"
             key={review.id}>
             <span style={{ fontSize: '18px' }}>
+                
               {sessionUser && sessionUser.id === review.User?.id
                 ? sessionUser.firstName
                 : (review.User?.firstName)
@@ -56,9 +58,9 @@ function SpotReviews() {
             <span style={{ fontSize: '12px' }}>
               {review.review}
             </span>
-              {/* {sessionUser && sessionUser.id === review.User?.id &&
-              <span className="deleteReviewButton"><DeleteReviewButton reviewId={review.id}/></span>
-              } */}
+              {sessionUser && sessionUser.id === review.User?.id &&
+              <span><DeleteReviewButton reviewId={review.id}/></span>
+              }
           </li>
         ))}
       </>

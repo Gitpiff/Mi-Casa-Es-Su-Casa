@@ -4,6 +4,7 @@ import { getSpot } from "./spots";
 const LOAD_REVIEWS = 'reviews/LOAD_REVIEWS';
 const CREATE_SPOT_REVIEWS = 'reviews/CREATE_SPOT_REVIEWS';
 const CLEAR_REVIEWS = 'reviews/CLEAR_REVIEWS';
+const DELETE_REVIEW = 'reviews/DELETE_REVIEW';
 
 //Actions
 const loadSpotReviews = (reviews, spotId) => {
@@ -22,13 +23,21 @@ const createSpotReview = (review, spotId) => {
     }
 }
 
-
-//Thunks
 export const clearReviews = () => {
     return {
         type: CLEAR_REVIEWS
     }
 }
+
+const removeReview = (reviewId) => {
+    return {
+        type: DELETE_REVIEW,
+        reviewId
+    }
+}
+
+
+//Thunks
 
 export const getSpotReviews = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`)
@@ -66,6 +75,19 @@ export const addReview = (spotId, review) => async (dispatch, getState) => {
     }
 }
 
+export const deleteReview = (reviewId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: "DELETE"
+    })
+
+    if (response.ok) {
+        dispatch(removeReview(reviewId))
+    } else {
+        const errors = await response.json();
+        return errors
+    }
+}
+
 //Reducer
 const reviewsReducer = (state ={}, action) => {
     switch (action.type) {
@@ -83,6 +105,11 @@ const reviewsReducer = (state ={}, action) => {
         }
         case CLEAR_REVIEWS: {
             return {}
+        }
+        case DELETE_REVIEW: {
+            const newState = {...state};
+            delete newState[action.reviewId];
+            return newState
         }
         default: 
         return state

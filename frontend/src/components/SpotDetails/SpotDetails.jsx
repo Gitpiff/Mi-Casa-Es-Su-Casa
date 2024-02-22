@@ -19,7 +19,7 @@ function SpotDetails() {
     const sessionUser = useSelector(state => state.session.user);
     //Get reviews
     const reviews = Object.values(useSelector(state => state.reviews))
-    console.log(`Reviews ${reviews}`)
+    //console.log(`Reviews ${reviews}`)
 
     //Get the selected spot
     useEffect(() => {
