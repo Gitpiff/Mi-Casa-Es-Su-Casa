@@ -3,7 +3,7 @@ import { useModal } from "../../context/Modal";
 import { deleteReview } from "../../store/reviews";
 
 function DeleteReviewModal({ reviewId }) {
-    console.log(reviewId)
+    //console.log(reviewId)
     const { closeModal } = useModal();
     const dispatch = useDispatch();
     const yes = (e) => {
@@ -18,7 +18,7 @@ function DeleteReviewModal({ reviewId }) {
     }
 
     return (
-        <section className="modal">
+        <section>
             <h1>Confirm Delete</h1>
             <p>Are you sure you want to remove this review?</p>
             <button

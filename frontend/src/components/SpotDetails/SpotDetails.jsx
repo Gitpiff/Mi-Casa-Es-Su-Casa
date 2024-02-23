@@ -51,7 +51,7 @@ function SpotDetails() {
                     <span>$ {Number.parseFloat(`${spot.price}`).toFixed(2)}</span>
                 </div>
                 <div>
-                    <span>&#9733; {Number.parseFloat(`${spot.avgStarRating}`).toFixed(2)}</span>
+                    <span>&#9733; {spot.avgStarRating ? Number.parseFloat(`${spot.avgStarRating}`).toFixed(2) : "New"}</span>
                 </div>
                 <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
                 <div>
