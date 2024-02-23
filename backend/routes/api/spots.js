@@ -587,31 +587,57 @@ const validateReview = [
 
 //Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, next) => {
-    const { review, stars } = req.body
-    const spotId = Number(req.params.spotId)
-    let userId = Number(req.user.id)
+    const { user } = req;
+    if (!user) {
+        return res.status(401).json({
+            message: "Authentication required"
+        })
+    }
 
-    if (!(await Spot.findByPk(+spotId))) {
+    const { review, stars } = req.body
+
+    const spotId = Number(req.params.spotId)
+
+    const spot = await Spot.findOne({
+        where: { id: spotId },
+        include: [
+            {
+                model: Review,
+                attributes: ['userId']
+            }
+        ]
+    })
+
+    if (!spot) {
         return res.status(404).json({
             message: "Spot couldn't be found"
         })
     }
-    if (await Review.findOne({
-        where: { userId: userId }
-    })) {
-        return res.status(500).json({
-            message: "User already has a review for this spot"
+    try {
+        let errors = [];
+
+        spot.Reviews.forEach(review => {
+            if (review.userId === user.id) {
+                const err = new Error("User already has a review for this spot")
+                errors.push(err)
+            }
         })
+
+        if (errors.length) {
+            return res.status(500).json({
+                message: "User already has a review for this spot"
+            })
+        }
+
+        const newReview = await Review.create({ userId: user.id, spotId, review, stars })
+        res.status(201).json(newReview)
+
+    } catch (error) {
+        error.message = "Bad Request"
+        error.status = 400
+        next(error)
     }
 
-    let createdReview = await Review.create({
-        review,
-        stars,
-        userId,
-        spotId,
-    })
-
-    return res.status(201).json(createdReview)
 });
 
 

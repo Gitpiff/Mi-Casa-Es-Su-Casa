@@ -5,9 +5,11 @@ import * as sessionActions from "../../store/session";
 import SignUpFormModal from "../SignupFormModal/SignUpFormPage";
 import LoginFormModal from "../LoginFormModal/LoginFormModal";
 import OpenModalMenuItem from "./OpenModalMenuItem";
+import { useNavigate } from "react-router-dom";
 
 function ProfileButton({user}) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [ showMenu, setShowMenu ] = useState(false);
     const ulRef = useRef()
 
@@ -22,7 +24,7 @@ function ProfileButton({user}) {
         if (!showMenu) return;
 
         const closeMenu = (e) => {
-            if (!ulRef.current.contains(e.target)) {
+            if (ulRef.current && !ulRef.current.contains(e.target)) {
                 setShowMenu(false)
             }
         };
@@ -43,6 +45,12 @@ function ProfileButton({user}) {
         closeMenu();
     };
 
+    const manageSpots = (e) => {
+        e.preventDefault();
+        closeMenu();
+        navigate('/spots/current');
+    }
+
     return (
        <>
             <button style={{cursor: "pointer"}} onClick={toggleMenu}>
@@ -54,7 +62,7 @@ function ProfileButton({user}) {
                         <li>Hello, {user.username}</li>
                         {/* <li>{user.firstName} {user.lastName}</li> */}
                         <li>{user.email}</li>
-                        <li>Manage Spots</li>
+                        <li style={{cursor: "pointer"}} onClick={manageSpots}>Manage Spots</li>
                         <li>
                             <button onClick={logout}>
                                 Log Out

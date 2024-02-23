@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { getSpot } from "../../store/spots";
 import SpotReviews from "../SpotReviews";
 import { getSpotReviews } from "../../store/reviews";
+import OpenModalButton from "../OpenModalButton"
+import CreateReviewModal from "../SpotReviews/CreateReviewModal";
 
 function SpotDetails() {
     const dispatch = useDispatch();
@@ -17,7 +19,7 @@ function SpotDetails() {
     const sessionUser = useSelector(state => state.session.user);
     //Get reviews
     const reviews = Object.values(useSelector(state => state.reviews))
-    console.log(`Reviews ${reviews}`)
+    //console.log(`Reviews ${reviews}`)
 
     //Get the selected spot
     useEffect(() => {
@@ -49,28 +51,44 @@ function SpotDetails() {
                     <span>$ {Number.parseFloat(`${spot.price}`).toFixed(2)}</span>
                 </div>
                 <div>
-                    <span>&#9733; {Number.parseFloat(`${spot.avgStarRating}`).toFixed(2)}</span>
+                    <span>&#9733; {spot.avgStarRating ? Number.parseFloat(`${spot.avgStarRating}`).toFixed(2) : "New"}</span>
                 </div>
                 <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
                 <div>
+                {(sessionUser && spot.numReviews === 0 && sessionUser.id !== spot.ownerId) &&
+                        <>
+                           <OpenModalButton
+                                buttonText="Post Your Review"
+                                modalComponent={<CreateReviewModal spotId={spotId}/>}
+                            />
+                            <p>Be the first to post a review!</p>
+                        </>}
                     {/* If more than One Review display Reviews instead of Review */}
                     {
-                        spot.numReviews === 1 && 
-                        <span>1 Review</span>
+                        sessionUser && spot.numReviews === 1 && sessionUser.id !== spot.ownerId &&
+                        <>
+                            <span>1 Review</span>
+                            <OpenModalButton
+                                buttonText="Post Your Review"
+                                modalComponent={<CreateReviewModal spotId={spotId}/>}
+                            />
+                        </>
                     }
-                    {spot.numReviews && spot.numReviews > 1 &&
-                    <span>{spot.numReviews} Reviews </span>
+                    {
+                        sessionUser && spot.numReviews && spot.numReviews > 1 && sessionUser.id !== spot.ownerId &&
+                    <>
+                        <span>{spot.numReviews} Reviews </span>
+                        <OpenModalButton
+                                buttonText="Post Your Review"
+                                modalComponent={<CreateReviewModal spotId={spotId}/>}
+                            />
+                    </>
                     }
                     {
                         spot.numReviews >= 1 && <SpotReviews spotId={spotId} sessionUser={sessionUser} spot={spot}/>
                     }
-                    {
-                        (sessionUser && spot.numReviews === 0 && sessionUser.id !== spot.ownerId) && 
-                            <p>
-                                Be the first to post a review!
-                            </p>
-                    }
-                    {/* <SpotReviews spotId={spotId} sessionUser={sessionUser} spot={spot}/> */}
+
+                    
                 </div>
             </div>
         </section>

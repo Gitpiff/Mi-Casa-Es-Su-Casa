@@ -85,6 +85,16 @@ export const createSpotImage = (spotId, spotImage) => async (dispatch) => {
     }
 }
 
+export const getOwnerSpots = () => async (dispatch) => {
+    const response = await csrfFetch('/api/spots/current')
+
+    if (response.ok) {
+        const data =  await response.json()
+        dispatch(getSpots(data))
+        return data
+    }
+}
+
 //Reducer
 const spotsReducer = (state = {}, action) => {
     switch (action.type) {
