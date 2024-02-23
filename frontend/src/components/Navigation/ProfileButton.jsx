@@ -43,6 +43,7 @@ function ProfileButton({user}) {
 
         dispatch(sessionActions.logout());
         closeMenu();
+        navigate('/');
     };
 
     const manageSpots = (e) => {

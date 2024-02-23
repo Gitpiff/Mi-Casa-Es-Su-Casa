@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOwnerSpots } from "../../store/spots";
 import { Link } from "react-router-dom";
+import DeleteSpotModalButton from "../DeleteSpotModal/DeleteSpotModalButton";
 
 function ManageSpots() {
     const dispatch = useDispatch();
@@ -40,7 +41,7 @@ function ManageSpots() {
                                 </Link>
                                 <p className='buttonBlock'>
                                     <Link to={`/spots/${spot.id}/edit`}><button style={{ marginRight: "10px" }}>Update</button></Link>
-                                    {/* <DeleteSpotModalButton spotId={spot.id} /> */}
+                                    <DeleteSpotModalButton spotId={spot.id}/>
                                 </p>
                             </div>
                         </div>
