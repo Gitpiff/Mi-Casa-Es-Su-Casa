@@ -17,24 +17,24 @@ function SpotsList() {
     return (
     <>
     <section>
-        <div className="main-container">
+        <div className="container">
             {
                 spots.map(spot => (
-                    <div key={spot.id}>
+                    <div key={spot.id} className="spotCard">
                         <Link to={`/spots/${spot.id}`}>
-                            <span>{spot.name}</span>
+                            <span className="toolTip">{spot.name}</span>
                             <img
                                 src={spot.previewImage}
                                 alt={spot.name}
                                 className="spotImage"
                             />
                         </Link>
-                    <div>
+                    <div className="spotInfo">
                         <span>{`${spot.city}, ${spot.state}`}</span>
-                        <span>&#9733; {parseFloat(spot.avgRating).toFixed(2)}</span>
-                        {/* {console.log(typeof(spot.avgRating))} */}
+                        <span id="starReviews">&#9733; {spot.avgRating !== undefined ? `${parseFloat(spot.avgRating).toFixed(2)}` : "New"}</span>
+                        {console.log(typeof(spot.avgRating))}
                     </div>
-                        <span>{`$${parseFloat(spot.price).toFixed(2)} night`}</span>
+                        <span style={{ fontWeight: '800' }}>{`$${parseFloat(spot.price).toFixed(2)} night`}</span>
                     </div>
                 ))
             }

@@ -36,7 +36,7 @@ function SpotDetails() {
 
     return ( spot && 
         <section>
-            <div>
+            <div className="container">
                 <h2>{spot.name}</h2>
                 <h4>{spot.city}, {spot.state}, {spot.country}</h4>
                 <div>

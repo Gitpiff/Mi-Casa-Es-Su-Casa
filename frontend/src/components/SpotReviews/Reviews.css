@@ -1,0 +1,28 @@
+.stars .on {
+    color: #e2725a !important;
+    width: 50px;
+    border: none;
+}
+
+.stars .off {
+    color: gainsboro;
+    width: 50px;
+    border: none;
+}
+
+.stars {
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+.stars button {
+    box-shadow: none;
+    width: 20px;
+    background-color: #79aeb2;
+}
+
+textarea {
+    margin-top: 30px;
+    margin-bottom: 5px;
+}

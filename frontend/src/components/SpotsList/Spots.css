@@ -1,9 +1,33 @@
-.main-container {
+.container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
     gap: 20px;
     justify-items: center;
-    margin: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.spotCard {
+    width: 100%;
+}
+
+.toolTip {
+    display: none;
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 10px;
+    padding: 2px 3px 1px 3px;
+    border: #f9ddd2 1px solid;
+    background-color: #f9ddd2;
+    font-family: 'Yeseva One', serif;
+    color: #4a6274;
+    font-weight: 400;
+    box-shadow: 2px 2px 0px #e2725a;
+    border-radius: 5px;
+}
+
+.spotCard:hover .toolTip {
+    display: block;
 }
 
 .spotImage {
@@ -12,4 +36,23 @@
     object-fit: cover;
     object-position: center;
     border-radius: 10px;
+}
+
+.spotInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#starReviews::first-letter {
+    color: #e2725a !important;
+    text-shadow: 1px 1px #f9ddd2;
+}
+
+
+@media screen and (min-width:1200px) {
+    .container {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
