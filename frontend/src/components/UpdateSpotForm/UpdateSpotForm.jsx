@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { editSpot, getSpot } from '../../store/spots';
+import { modifySpot, getSpot } from '../../store/spots';
 // import './UpdateSpot.css';
 // import { modifySpotImage } from '../../store/imageReducer';
 
@@ -177,7 +177,7 @@ const UpdateSpotForm = () => {
                 price
             };
 
-            return dispatch(editSpot(updatedSpot))
+            return dispatch(modifySpot(updatedSpot))
                 .then(() => {
                     // if (previewImg) dispatch(modifySpotImage(spotId, { url: previewImg }));
                     // if (img1) dispatch(modifySpotImage(spotId, { url: img1 }));
