@@ -125,7 +125,7 @@ function CreateSpotForm() {
     }, [address, city, state, description, lat, lng, name, url, price, country, img1, img2, img3, img4, img5])
     
     return (  
-        <div>
+        <div className="spotContainer">
             {
                 sessionUser && 
                     <form onSubmit={handleSubmit}>

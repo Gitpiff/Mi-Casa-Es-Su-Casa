@@ -59,8 +59,8 @@ function ProfileButton({user}) {
                     <FaUserAstronaut />
                 </button>
             </div>
-            <div className="dropdown" ref={ulRef}>
-                <div className={ulClassName}>
+           
+                <div className={ulClassName} ref={ulRef}>
                     { user ? (
                         <>
                             <li>Hello, {user.username}</li>
@@ -94,7 +94,7 @@ function ProfileButton({user}) {
                 }
 
                 </div>
-            </div>
+        
        </>
      );
 }

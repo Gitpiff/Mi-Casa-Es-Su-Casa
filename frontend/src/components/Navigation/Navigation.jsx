@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import { FcHome } from "react-icons/fc";
 import './Navigation.css'
+import OpenModalButton from "../OpenModalButton";
 
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector((state) => state.session.user);
@@ -10,7 +11,7 @@ function Navigation({ isLoaded }) {
     return (
        <ul id="header">
         <li style={{fontSize: "20px"}}>
-            <NavLink className="logo" to="/"><FcHome /><span>Mi Casa Es Su Casa</span></NavLink>
+            <NavLink className="logo" to="/"><FcHome />Mi Casa Es Su Casa</NavLink>
         </li>
         {isLoaded && (
           <div className="newSpotContainer">
