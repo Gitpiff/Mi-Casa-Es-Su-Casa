@@ -6,6 +6,7 @@ import SpotReviews from "../SpotReviews";
 import { getSpotReviews } from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton"
 import CreateReviewModal from "../SpotReviews/CreateReviewModal";
+import "./SpotDetails.css"
 
 function SpotDetails() {
     const dispatch = useDispatch();
@@ -34,15 +35,27 @@ function SpotDetails() {
  
 
 
-    return ( spot && 
+    return ( spot && spot.Owner &&
         <section>
-            <div>
+            <div className="container">
                 <h2>{spot.name}</h2>
                 <h4>{spot.city}, {spot.state}, {spot.country}</h4>
-                <div>
-                    {spot.SpotImages && spot.SpotImages.map(image => (
+                <div className="gallery galleryContainer">
+                {spot.SpotImages && spot.SpotImages.map(image => (
                         image.preview &&
-                        <img style={{height: "200px", width: "300px"}} key={image.id} src={image.url} />
+                        <img
+                            key={image.id}
+                            src={image.url}
+                        />
+                    ))}
+                    {spot.SpotImages && spot.SpotImages.map(image => (
+                        !image.preview &&
+                        <img
+                            key={image.id}
+                            src={image.url}
+                            height="200px"
+                            width="200px"
+                        />
                     ))}
                 </div>
                 <h3>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</h3>
@@ -50,7 +63,7 @@ function SpotDetails() {
                 <div>
                     <span>$ {Number.parseFloat(`${spot.price}`).toFixed(2)}</span>
                 </div>
-                <div>
+                <div >
                     <span>&#9733; {spot.avgStarRating ? Number.parseFloat(`${spot.avgStarRating}`).toFixed(2) : "New"}</span>
                 </div>
                 <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>

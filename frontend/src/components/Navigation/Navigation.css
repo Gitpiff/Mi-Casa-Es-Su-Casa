@@ -3,6 +3,18 @@ li {
     flex-direction: column;
 }
 
+.logo {
+    color: #FC642D;
+    opacity: .7;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    font-size: larger;
+    position: relative;
+    text-decoration: none;
+  }
+  
+
 #header {
     display: flex;
     justify-content: space-between;
@@ -10,3 +22,48 @@ li {
     padding-bottom: 20px;
     border-bottom: 1px solid black;
 }
+
+.profileButton {
+   margin-left: 10px; 
+}
+
+.newSpotContainer {
+    display: flex;
+    align-items: center;
+}
+
+.loginButton {
+    width: 100%;
+}
+
+.menu {
+  width: fit-content;
+  font-size: 15px;
+  align-self: flex-end;
+  margin: 1px;
+  position: relative;
+  padding: 10px;
+}
+
+@media screen and (max-width: 375px){
+    .profileButton {
+      margin-left: 5px;
+    }
+    .menu {
+      width: fit-content;
+      font-size: 10px;
+      margin: 1px;
+      padding: 0 8px ;
+    }
+  
+    #header {
+      margin: auto;
+      width: 100%;
+    }
+  
+    .loginButton  {
+      width: 90%;
+      height: 30px;
+      font-size: smaller;
+    }
+  }

@@ -76,7 +76,7 @@ export default function CreateReviewModal({ spotId }) {
                                     setHover(0);
                                 }}
                             >
-                                <span>&#9733;</span>
+                                <span className='star'>&#9733;</span>
                             </button>
                         )
                     })}

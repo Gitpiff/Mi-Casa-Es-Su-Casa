@@ -43,6 +43,7 @@ function ProfileButton({user}) {
 
         dispatch(sessionActions.logout());
         closeMenu();
+        navigate('/');
     };
 
     const manageSpots = (e) => {
@@ -53,42 +54,47 @@ function ProfileButton({user}) {
 
     return (
        <>
-            <button style={{cursor: "pointer"}} onClick={toggleMenu}>
-                <FaUserAstronaut />
-            </button>
-            <ul className={ulClassName} ref={ulRef}>
-                { user ? (
-                    <>
-                        <li>Hello, {user.username}</li>
-                        {/* <li>{user.firstName} {user.lastName}</li> */}
-                        <li>{user.email}</li>
-                        <li style={{cursor: "pointer"}} onClick={manageSpots}>Manage Spots</li>
-                        <li>
-                            <button onClick={logout}>
-                                Log Out
-                            </button>
-                        </li>
-                    </>
-                ) : (
-                    <>
-                        <li style={{cursor: "pointer"}}>
-                            <OpenModalMenuItem
-                                itemText="Log In"
-                                onButtonClick={closeMenu}
-                                modalComponent={<LoginFormModal />}
-                            />
-                        </li>
-                        <li style={{cursor: "pointer"}}>
-                            <OpenModalMenuItem
-                                itemText="Sign Up"
-                                onButtonClick={closeMenu}
-                                modalComponent={<SignUpFormModal />}
-                            />
-                        </li>
-                    </>
-                )
-            }
-            </ul>
+            <div className="menu">
+                <button className="menuIcon" style={{cursor: "pointer"}} onClick={toggleMenu}>
+                    <FaUserAstronaut />
+                </button>
+            </div>
+           
+                <div className={ulClassName} ref={ulRef}>
+                    { user ? (
+                        <>
+                            <li>Hello, {user.username}</li>
+                            {/* <li>{user.firstName} {user.lastName}</li> */}
+                            <li>{user.email}</li>
+                            <li style={{cursor: "pointer"}} onClick={manageSpots}>Manage Spots</li>
+                            <li>
+                                <button onClick={logout}>
+                                    Log Out
+                                </button>
+                            </li>
+                        </>
+                    ) : (
+                        <>
+                            <li style={{cursor: "pointer"}}>
+                                <OpenModalMenuItem
+                                    itemText="Log In"
+                                    onButtonClick={closeMenu}
+                                    modalComponent={<LoginFormModal />}
+                                />
+                            </li>
+                            <li style={{cursor: "pointer"}}>
+                                <OpenModalMenuItem
+                                    itemText="Sign Up"
+                                    onButtonClick={closeMenu}
+                                    modalComponent={<SignUpFormModal />}
+                                />
+                            </li>
+                        </>
+                    )
+                }
+
+                </div>
+        
        </>
      );
 }

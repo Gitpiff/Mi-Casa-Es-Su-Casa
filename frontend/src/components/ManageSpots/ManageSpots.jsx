@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOwnerSpots } from "../../store/spots";
 import { Link } from "react-router-dom";
+import DeleteSpotModalButton from "../DeleteSpotModal/DeleteSpotModalButton";
 
 function ManageSpots() {
     const dispatch = useDispatch();
@@ -17,9 +18,10 @@ function ManageSpots() {
     return (sessionUser &&
         <>
             <h1 style={{ marginLeft: "20px" }}>Manage Your Spots</h1>
-            {spots.length === 0 &&
+            <Link to='/spots/new'><button style={{ marginBottom: "30px", marginLeft: "20px" }}>Create a New Spot</button></Link>
+            {/* {spots.length === 0 &&
                 <Link to='/spots/new'><button style={{ marginBottom: "30px", marginLeft: "20px" }}>Create a New Spot</button></Link>
-            }
+            } */}
             {spots &&
                 <div className='container'>
                     {spots.map(spot => (
@@ -40,7 +42,7 @@ function ManageSpots() {
                                 </Link>
                                 <p className='buttonBlock'>
                                     <Link to={`/spots/${spot.id}/edit`}><button style={{ marginRight: "10px" }}>Update</button></Link>
-                                    {/* <DeleteSpotModalButton spotId={spot.id} /> */}
+                                    <DeleteSpotModalButton spotId={spot.id}/>
                                 </p>
                             </div>
                         </div>
