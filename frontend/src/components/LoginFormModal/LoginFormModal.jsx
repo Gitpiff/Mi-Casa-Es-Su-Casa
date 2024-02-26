@@ -16,11 +16,12 @@ function LoginFormModal() {
 
         setErrors({});
 
+    
         return dispatch(sessionActions.login({ credential, password }))
             .then(closeModal)
-            .catch(async (res) => {
+            .catch(async res => {
                 const data = await res.json();
-                if (data && data.errors) {
+                if (data && data?.errors) {
                     setErrors(data.errors)
                 }
             })
@@ -43,9 +44,12 @@ function LoginFormModal() {
 
     return (
         <>
+        <div className="login-form">
             <h1>Log In</h1>
             <form onSubmit={handleSubmit}>
-                {errors.credential && <h4 style={{color: "red"}}>{errors.credential}</h4>}
+                <span>
+                    {errors.credential && <h4 style={{color: "red"}}>{errors.credential}</h4>}
+                </span>
                 <label>
                     Username or Email
                     <input
@@ -72,8 +76,10 @@ function LoginFormModal() {
                 >
                     Log in
                 </button>
-                <button type="submit" onClick={demoUser}>Demo User</button>
+                <button className="demo-login" type="submit" onClick={demoUser}>Demo User</button>
             </form>
+
+        </div>
         </>
      );
 }

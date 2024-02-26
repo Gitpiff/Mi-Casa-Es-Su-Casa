@@ -41,7 +41,7 @@ export default function CreateReviewModal({ spotId }) {
     }
 
     return (
-        <section className='modal'>
+        <section className='new-review'>
             <h1>How was your stay?</h1>
             <form onSubmit={handleSubmit}>
                 <p className="error">

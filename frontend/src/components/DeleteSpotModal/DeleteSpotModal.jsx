@@ -11,12 +11,14 @@ function DeleteSpotModal({ spotId }) {
                 .then(closeModal)
     }
     return ( 
-        <>
+<div className="delete">
             <h1>Confirm Delete</h1>
-            <p>Are you sure you want to remove this spot from the listings?</p>
-            <button onClick={yes}>Yes -Delete Spot-</button>
-            <button onClick={closeModal}>No -Keep Spot-</button>
-        </>
+            <p>Are you sure you want to remove this spot?</p>
+            <div className="confirm-delete">
+                <button className="yes-delete" onClick={yes}>Yes (Delete Spot)</button>
+                <button className="no-delete" onClick={closeModal}>No (Keep Spot)</button>
+            </div>
+        </div>
      );
 }
 

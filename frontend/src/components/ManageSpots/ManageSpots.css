@@ -1,0 +1,123 @@
+.landing-page {
+    display: flex;
+    justify-content: center;
+}
+
+.all-tiles {
+    padding: 0;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.tooltip {
+    font-size: 14pt;
+    width: auto;
+    display: none;
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    padding: .5em;
+    cursor: pointer;
+    margin: 9em;
+}
+
+.spot-tile {
+    min-width: 400px;
+    margin: .75em;
+    margin-bottom: 1.5em;
+    flex-basis: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 1px 1px 10px black;
+}
+
+.spot-prev {
+    width: 400px;
+    height: 350px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.spot-prev:hover .tooltip {
+    display: block;
+    text-align: center;
+}
+
+.spot-img {
+    object-fit: cover;
+    width: 100%;
+
+}
+
+.tile-info {
+    font-size: 14pt;
+    width: 100%;
+    display: grid;
+    grid-template-areas:
+        'a b'
+        'c .'
+        'd .'
+    ;
+}
+
+.tile-info p {
+    margin: .5em;
+}
+
+.spot-rating {
+    justify-self: end;
+}
+
+.price-per-night {
+    display: flex;
+    align-items: baseline;
+}
+
+.price {
+    font-weight: bold;
+}
+
+.manage-header {
+    margin: .5em 5em;
+}
+
+.manage-header h1 {
+    margin-bottom: .25em;
+}
+
+.manage-header button {
+    font-size: 14pt;
+    color: white;
+    background-color: #999999;
+    box-shadow: 2px 2px black;
+    cursor: pointer;
+}
+
+.update-delete {
+    margin: .5em;
+    grid-area: d;
+}
+
+.update-delete button {
+    margin-right: 1em;
+    font-size: 14pt;
+    color: white;
+    background-color: #999999;
+    box-shadow: 2px 2px black;
+    cursor: pointer;
+}
+
+.update-delete button #text {
+    filter: none;
+}
+
+.update-delete button:hover {
+    list-style: none;
+}
