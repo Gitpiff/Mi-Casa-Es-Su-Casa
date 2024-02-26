@@ -37,40 +37,68 @@ function SpotDetails() {
 
     return ( spot && spot.Owner &&
         <section>
-            <div className="container">
-                <h2>{spot.name}</h2>
-                <h4>{spot.city}, {spot.state}, {spot.country}</h4>
-                <div className="gallery galleryContainer">
-                {spot.SpotImages && spot.SpotImages.map(image => (
-                        image.preview &&
-                        <img
-                            key={image.id}
-                            src={image.url}
-                        />
-                    ))}
-                    {spot.SpotImages && spot.SpotImages.map(image => (
-                        !image.preview &&
-                        <img
-                            key={image.id}
-                            src={image.url}
-                            height="200px"
-                            width="200px"
-                        />
-                    ))}
+            <div className="spot-container">
+                <div className="spot-details">
+                    <div className="heading">
+                        <h2>{spot.name}</h2>
+                        <h4>{spot.city}, {spot.state}, {spot.country}</h4>
+
+                    </div>
+                    <div className="pictures">
+                        {spot.SpotImages?.map(image => {
+                            if (image.preview === true) {
+                                return (
+                                    <div className='prev-img-container' key={image.id}>
+                                        <img src={image.url} className='preview-image' />
+                                    </div>
+                                )
+                            }
+                        })}
+                        <div className='reg-img-container'>
+                            {spot.SpotImages?.map(image => {
+                                if (image.preview === false) {
+                                    return (
+                                        <img src={image.url} className='reg-image' key={image.id} />
+                                    )
+                                }
+                            })}
+                        </div>
+                    </div>
                 </div>
-                <h3>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</h3>
-                <span>{spot.description}</span>
-                <div>
-                    <span>$ {Number.parseFloat(`${spot.price}`).toFixed(2)}</span>
-                </div>
-                <div >
-                    <span>&#9733; {spot.avgStarRating ? Number.parseFloat(`${spot.avgStarRating}`).toFixed(2) : "New"}</span>
-                </div>
-                <button onClick={() => alert("Feature Coming Soon...")}>Reserve</button>
-                <div>
+
+                
+
+                <div className='spot-info'>
+                    <div className='details'>
+                        <h2>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</h2>
+                        <p>{spot.description}</p>
+                    </div>
+                    <div className='reserve'>
+                        <div className='reserve-price'>
+                            <i className="fa-solid fa-coins"></i> $ {parseFloat(spot.price).toFixed(2)} night
+                        </div>
+                            <div className='review-preview'>
+                                <p className='avg-review'>
+                                    <i className='fas fa-star'></i>
+                                    <span>&#9733; {spot.avgRating !== undefined ? `$ ${parseFloat(spot.avgRating).toFixed(2)}` : "New"}</span>
+                                    
+                                    {spot.numReviews !== 0 && (
+                                        <span>
+                                            · {spot.numReviews} {spot.numReviews === 1 ? 'review' : 'reviews'}
+                                        </span>
+                                    )}
+                                </p>
+                            </div>
+                             <button onClick={() => window.alert('Feature Coming Soon...')}>Reserve</button>
+                        </div>
+                    
+                    <div className="spot-reviews">
+
+                    </div>
                 {(sessionUser && spot.numReviews === 0 && sessionUser.id !== spot.ownerId) &&
                         <>
                            <OpenModalButton
+                                className= "new-review"
                                 buttonText="Post Your Review"
                                 modalComponent={<CreateReviewModal spotId={spotId}/>}
                             />
@@ -82,6 +110,7 @@ function SpotDetails() {
                         <>
                             <span>1 Review</span>
                             <OpenModalButton
+                                className= "new-review"
                                 buttonText="Post Your Review"
                                 modalComponent={<CreateReviewModal spotId={spotId}/>}
                             />
@@ -90,8 +119,9 @@ function SpotDetails() {
                     {
                         sessionUser && spot.numReviews && spot.numReviews > 1 && sessionUser.id !== spot.ownerId &&
                     <>
-                        <span>{spot.numReviews} Reviews </span>
+                        <span id="starReviews">&#9733; {spot.numReviews} Reviews </span>
                         <OpenModalButton
+                                className= "new-review"
                                 buttonText="Post Your Review"
                                 modalComponent={<CreateReviewModal spotId={spotId}/>}
                             />
@@ -100,6 +130,7 @@ function SpotDetails() {
                     {
                         spot.numReviews >= 1 && <SpotReviews spotId={spotId} sessionUser={sessionUser} spot={spot}/>
                     }
+                
 
                     
                 </div>

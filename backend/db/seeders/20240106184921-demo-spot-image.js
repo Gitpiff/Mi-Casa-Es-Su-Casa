@@ -60,17 +60,72 @@ const demoSpotImages = [
   },
   {
     spotId: 3,
-    url: "https://unsplash.com/photos/person-holding-map-D2K1UZr4vxk",
+    url: "https://img.asmedia.epimg.net/resizer/1itgyxiU9AqVyy1qAK982UIQLyc=/644x362/filters:focal(559x357:569x367)/cloudfront-eu-central-1.images.arcpublishing.com/diarioas/SS37JYT2SBAN7I5FBEZS76JWXA.jpg",
+    preview: true
+  },
+  {
+    spotId: 3,
+    url: "https://www.eleconomista.com.mx/__export/1686116861725/sites/eleconomista/img/2023/06/06/estadio_azteca_propiedades.jpg_554688468.jpg",
+    preview: true
+  },
+  {
+    spotId: 3,
+    url: "https://images.squarespace-cdn.com/content/v1/592a3ccad2b857159c817d9a/1634072814176-1FVB83JZHMX9EH25QNQ2/20211012_Estadio_Azteca.jpg",
+    preview: true
+  },
+  {
+    spotId: 3,
+    url: "https://dnclcgcvl4f14.cloudfront.net/siila-cm/prd/1280w/7996-1687546713335.jpg",
     preview: true
   },
   {
     spotId: 4,
-    url: "https://unsplash.com/photos/dog-standing-on-pavement-Crj3gU0aJsU",
+    url: "https://lh3.googleusercontent.com/proxy/wyTnF3nGRRFG-3lBdVP2Bs0MA0MDijzDKd5iORfPjcxQ79-do32W0Cs-n8E_-Ex0Vy_oXTzBE7KSKbIccEr3B8JazWSKLf2iOOL7GXIsh8g8GhLGtAXjv6YKjs0mrf9zu5U",
+    preview: true
+  },
+  {
+    spotId: 4,
+    url: "https://facts.net/wp-content/uploads/2023/09/15-mind-blowing-facts-about-la-bombonera-1694686977.jpg",
+    preview: true
+  },
+  {
+    spotId: 4,
+    url: "https://media.cntraveler.com/photos/5afde3ce33b017425b111138/16:9/w_2560%2Cc_limit/La-Bombonera_GettyImages-493750714.jpg",
+    preview: true
+  },
+  {
+    spotId: 4,
+    url: "https://landingpadba.com/wp-content/uploads/2009/01/La-Bombonera-stadium-upper-view-620x536.jpg",
+    preview: true
+  },
+  {
+    spotId: 4,
+    url: "https://calciodeal.com/wp-content/uploads/2023/08/bombonera-boca-junior-stadio-scaled.jpg",
     preview: true
   },
   {
     spotId: 5,
-    url: "https://unsplash.com/photos/an-aerial-view-of-a-forest-with-yellow-and-green-trees-Jyt4i27VXoc",
+    url: "https://estaticos.esmadrid.com/cdn/farfuture/0L2A52DEz0trwTeGDOi3C_ujRwdBZi8MosGiy1EdrUc/mtime:1695198032/sites/default/files/styles/content_type_full/public/recursosturisticos/infoturistica/reforma_santiagobernabeu.jpg?itok=QCYWDqel",
+    preview: true
+  },
+  {
+    spotId: 5,
+    url: "https://media.cntraveler.com/photos/5e66a338b93f0800081a6f28/16:9/w_2560,c_limit/santiago-bernabe%CC%81u-stadium-madrid-2020-GettyImages-1194733745.jpg",
+    preview: true
+  },
+  {
+    spotId: 5,
+    url: "https://images.adsttc.com/media/images/6526/e5c2/64e5/0c5f/47f3/0877/newsletter/l35-architects-sobre-la-remodelacion-del-estadio-santiago-bernabeu-de-madrid-a-pocos-meses-de-finalizar_16.jpg?1697048007",
+    preview: true
+  },
+  {
+    spotId: 5,
+    url: "https://upload.wikimedia.org/wikipedia/commons/a/a8/Estadio_Santiago_Bernab%C3%A9u_%282016%29.jpg",
+    preview: true
+  },
+  {
+    spotId: 5,
+    url: "https://www.spain.info/.content/imagenes/cabeceras-grandes/madrid/estadio-bernabeu-vista-aerea-c-turismo-madrid.jpg",
     preview: true
   }
 ]
