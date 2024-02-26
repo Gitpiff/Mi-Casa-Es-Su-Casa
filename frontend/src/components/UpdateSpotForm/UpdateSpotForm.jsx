@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { modifySpot, getSpot } from '../../store/spots';
-// import './UpdateSpot.css';
+
 // import { modifySpotImage } from '../../store/imageReducer';
 
 const UpdateSpotForm = () => {
@@ -29,23 +29,8 @@ const UpdateSpotForm = () => {
     const [name, setName] = useState(spot?.name || '');
     const [description, setDescription] = useState(spot?.description || '');
     const [price, setPrice] = useState('' + spot?.price || '');
-    // const [previewImg, setPreviewImg] = useState(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[0].url || '');
-    // const [img1, setImg1] = useState(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[1].url || '');
-    // const [img2, setImg2] = useState(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[2].url || '');
-    // const [img3, setImg3] = useState(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[3].url || '');
-    // const [img4, setImg4] = useState(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[4].url || '');
+   
     const [errors, setErrors] = useState({});
-
-
-    // useEffect(() => {
-    //     if (spot) {
-    //         setPreviewImg(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[0].url || '');
-    //         setImg1(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[1].url || '');
-    //         setImg2(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[2].url || '');
-    //         setImg3(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[3].url || '');
-    //         setImg4(spot?.spotImages?.slice().sort((a, b) => a.id - b.id)[4].url || '');
-    //     }
-    // }, [spot])
 
     const handleValidation = () => {
         const formErrors = {};
@@ -111,50 +96,7 @@ const UpdateSpotForm = () => {
                 formErrors.price = 'Price must be a positive number'
             }
         }
-        // if (!previewImg.length) {
-        //     formIsValid = false;
-        //     formErrors.previewImg = 'Preview image is required'
-        // }
-        // if (previewImg.length) {
-        //     if (!previewImg.endsWith('.png') &&
-        //         !previewImg.endsWith('.jpg') &&
-        //         !previewImg.endsWith('.jpeg')) {
-        //         formIsValid = false;
-        //         formErrors.previewImg = 'Image URL must end in .png, .jpg, or .jpeg'
-        //     }
-        // }
-        // if (img1.length) {
-        //     if (!img1.endsWith('.png') &&
-        //         !img1.endsWith('.jpg') &&
-        //         !img1.endsWith('.jpeg')) {
-        //         formIsValid = false;
-        //         formErrors.img1 = 'Image URL must end in .png, .jpg, or .jpeg'
-        //     }
-        // }
-        // if (img2.length) {
-        //     if (!img2.endsWith('.png') &&
-        //         !img2.endsWith('.jpg') &&
-        //         !img2.endsWith('.jpeg')) {
-        //         formIsValid = false;
-        //         formErrors.img2 = 'Image URL must end in .png, .jpg, or .jpeg'
-        //     }
-        // }
-        // if (img3.length) {
-        //     if (!img3.endsWith('.png') &&
-        //         !img3.endsWith('.jpg') &&
-        //         !img3.endsWith('.jpeg')) {
-        //         formIsValid = false;
-        //         formErrors.img3 = 'Image URL must end in .png, .jpg, or .jpeg'
-        //     }
-        // }
-        // if (img4.length) {
-        //     if (!img4.endsWith('.png') &&
-        //         !img4.endsWith('.jpg') &&
-        //         !img4.endsWith('.jpeg')) {
-        //         formIsValid = false;
-        //         formErrors.img4 = 'Image URL must end in .png, .jpg, or .jpeg'
-        //     }
-        // }
+       
 
         setErrors(formErrors);
         return formIsValid;
@@ -179,12 +121,7 @@ const UpdateSpotForm = () => {
 
             return dispatch(modifySpot(updatedSpot))
                 .then(() => {
-                    // if (previewImg) dispatch(modifySpotImage(spotId, { url: previewImg }));
-                    // if (img1) dispatch(modifySpotImage(spotId, { url: img1 }));
-                    // if (img2) dispatch(modifySpotImage(spotId, { url: img2 }));
-                    // if (img3) dispatch(modifySpotImage(spotId, { url: img3 }));
-                    // if (img4) dispatch(modifySpotImage(spotId, { url: img4 }));
-
+                   dispatch(getSpot(spotId))
                     navigate(`/spots/${spotId}`)
                 })
         }
@@ -194,7 +131,7 @@ const UpdateSpotForm = () => {
         navigate('/');
     }
 
-    if (!spot) return <>womp womp</>
+    if (!spot) return <></>
 
     return (
         <div className='update-spot-form'>
@@ -315,50 +252,7 @@ const UpdateSpotForm = () => {
                         {errors.price && <p className='spot-error'>{errors.price}</p>}
                     </div>
                 </div>
-                {/* <div className='set-photo outer-container'>
-                    <h2>Liven up your spot with photos</h2>
-                    <p>Submit a link to at least one photo to publish your spot.</p>
-                    <input
-                        placeholder='Preview Image URL'
-                        value={previewImg}
-                        onChange={e => setPreviewImg(e.target.value)}
-                    />
-                    <div className='spot-label'>
-                        {errors.previewImg && <p className='spot-error'>{errors.previewImg}</p>}
-                    </div>
-                    <input
-                        placeholder='Image URL'
-                        value={img1}
-                        onChange={e => setImg1(e.target.value)}
-                    />
-                    <div className='spot-label'>
-                        {errors.img1 && <p className='spot-error'>{errors.img1}</p>}
-                    </div>
-                    <input
-                        placeholder='Image URL'
-                        value={img2}
-                        onChange={e => setImg2(e.target.value)}
-                    />
-                    <div className='spot-label'>
-                        {errors.img2 && <p className='spot-error'>{errors.img2}</p>}
-                    </div>
-                    <input
-                        placeholder='Image URL'
-                        value={img3}
-                        onChange={e => setImg3(e.target.value)}
-                    />
-                    <div className='spot-label'>
-                        {errors.img3 && <p className='spot-error'>{errors.img3}</p>}
-                    </div>
-                    <input
-                        placeholder='Image URL'
-                        value={img4}
-                        onChange={e => setImg4(e.target.value)}
-                    />
-                    <div className='spot-label'>
-                        {errors.img4 && <p className='spot-error'>{errors.img4}</p>}
-                    </div>
-                </div> */}
+               
                 <button>Update Spot</button>
             </form>
         </div>
