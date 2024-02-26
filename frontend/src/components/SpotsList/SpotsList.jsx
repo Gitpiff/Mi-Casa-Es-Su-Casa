@@ -31,7 +31,7 @@ function SpotsList() {
                         </Link>
                     <div className="spotInfo">
                         <span>{`${spot.city}, ${spot.state}`}</span>
-                        <span id="starReviews">&#9733; {spot.avgRating !== undefined ? `$ ${parseFloat(spot.avgRating).toFixed(2)}` : "New"}</span>
+                        <span id="starReviews">&#9733; {spot.avgRating !== "No reviews found" ? `$ ${parseFloat(spot.avgRating).toFixed(2)}` : "New"}</span>
                         {console.log(typeof(spot.avgRating))}
                     </div>
                         <span style={{ fontWeight: '800' }}>{`$${parseFloat(spot.price).toFixed(2)} night`}</span>

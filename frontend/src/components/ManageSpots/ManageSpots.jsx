@@ -35,7 +35,7 @@ function ManageSpots() {
                                     />
                                     <div className='spotInfo'>
                                         <span>{spot.city}, {spot.state}</span>
-                                        <span id='starReviews'>&#9733; {spot.avgRating}</span>
+                                        <span id='starReviews'>&#9733; {parseFloat(spot.avgRating).toFixed(2)}</span>
                                     </div>
 
                                     <span style={{ fontWeight: '800' }}>${spot.price}</span> night

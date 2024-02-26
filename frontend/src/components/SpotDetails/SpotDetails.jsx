@@ -7,6 +7,7 @@ import { getSpotReviews } from "../../store/reviews";
 import OpenModalButton from "../OpenModalButton"
 import CreateReviewModal from "../SpotReviews/CreateReviewModal";
 import "./SpotDetails.css"
+// import { isArray } from "lodash";
 
 function SpotDetails() {
     const dispatch = useDispatch();
@@ -44,17 +45,21 @@ function SpotDetails() {
                         <h4>{spot.city}, {spot.state}, {spot.country}</h4>
 
                     </div>
-                    <div className="pictures">
-                        {spot.SpotImages?.map(image => {
+                    <div className="imagesGrid">
+                        {Array.isArray(spot.SpotImages) && spot.SpotImages.map(image => {
                             if (image.preview === true) {
                                 return (
-                                    <div className='prev-img-container' key={image.id}>
+                                    <div key={image.id}>
                                         <img src={image.url} className='preview-image' />
                                     </div>
                                 )
+                            } else if (image.preview === false) {
+                                return (
+                                    <img src={image.url} className='reg-image' key={image.id} />
+                                )
                             }
                         })}
-                        <div className='reg-img-container'>
+                        {/* <div className='reg-img-container'>
                             {spot.SpotImages?.map(image => {
                                 if (image.preview === false) {
                                     return (
@@ -62,7 +67,7 @@ function SpotDetails() {
                                     )
                                 }
                             })}
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -80,11 +85,11 @@ function SpotDetails() {
                             <div className='review-preview'>
                                 <p className='avg-review'>
                                     <i className='fas fa-star'></i>
-                                    <span>&#9733; {spot.avgRating !== undefined ? `$ ${parseFloat(spot.avgRating).toFixed(2)}` : "New"}</span>
-                                    
+                                    <span>&#9733; {spot.avgStarRating !== "No reviews found" ? `${parseFloat(spot.avgStarRating).toFixed(2)}` : "New"}</span>
+                                    {console.log(spot.avgStarRating)}
                                     {spot.numReviews !== 0 && (
                                         <span>
-                                            · {spot.numReviews} {spot.numReviews === 1 ? 'review' : 'reviews'}
+                                            · {spot.numReviews && spot.numReviews === 1 ? '1 review' : 'reviews'}
                                         </span>
                                     )}
                                 </p>
@@ -92,9 +97,7 @@ function SpotDetails() {
                              <button onClick={() => window.alert('Feature Coming Soon...')}>Reserve</button>
                         </div>
                     
-                    <div className="spot-reviews">
-
-                    </div>
+                   
                 {(sessionUser && spot.numReviews === 0 && sessionUser.id !== spot.ownerId) &&
                         <>
                            <OpenModalButton
@@ -127,14 +130,17 @@ function SpotDetails() {
                             />
                     </>
                     }
-                    {
-                        spot.numReviews >= 1 && <SpotReviews spotId={spotId} sessionUser={sessionUser} spot={spot}/>
-                    }
+                    
                 
 
                     
                 </div>
             </div>
+            <div className="spot-reviews">
+                {
+                    spot.numReviews >= 1 && <SpotReviews spotId={spotId} sessionUser={sessionUser} spot={spot}/>
+                }
+            </div>      
         </section>
      );
 }

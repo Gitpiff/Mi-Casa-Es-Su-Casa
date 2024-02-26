@@ -87,41 +87,41 @@ function CreateSpotForm() {
 
     useEffect(() => {
         let errObj = {}
-    if(!country) errObj.country = ( "Country required")
-    if(!address) errObj.address =  ("Address required")
-    if(!city) errObj.city =  ("City required")
-    if(!state) errObj.state =  ("State required")
-    if(!lat) errObj.lat =  ("Latitude required")
-    if(!lng) errObj.lng =  ("Longitude required")
-    if(!description || description.length < 30) errObj.description =  ("Description must be 30 characters")
-    if(!name) errObj.name =  ("Name required")
-    if(!url) errObj.url = ("Image required")
-    if(!price) errObj.price =  ("Price required")
+        if(!country) errObj.country = ( "Country required")
+        if(!address) errObj.address =  ("Address required")
+        if(!city) errObj.city =  ("City required")
+        if(!state) errObj.state =  ("State required")
+        if(!lat) errObj.lat =  ("Latitude required")
+        if(!lng) errObj.lng =  ("Longitude required")
+        if(!description || description.length < 30) errObj.description =  ("Description must be 30 characters")
+        if(!name) errObj.name =  ("Name required")
+        if(!url) errObj.url = ("Image required")
+        if(!price) errObj.price =  ("Price required")
 
-    if(price && price <= 0) errObj.price = ("Price is required")
+        if(price && price <= 0) errObj.price = ("Price is required")
 
-    if(lat && (lat > 90 || lat < -90)) errObj.lat = ("Latitude is not valid")
-    if(lng && (lng > 180 || lng < -180)) errObj.lng = ("Longitude is not valid")
+        if(lat && (lat > 90 || lat < -90)) errObj.lat = ("Latitude is not valid")
+        if(lng && (lng > 180 || lng < -180)) errObj.lng = ("Longitude is not valid")
 
-    const urlFormat = url.split('.').pop()
-    if(url && (urlFormat !== "png" && urlFormat !== "jpg" && urlFormat !== "jpeg")) errObj.image = ("Image URL must end in .png, .jpg, or .jpeg")
+        const urlFormat = url.split('.').pop()
+        if(url && (urlFormat !== "png" && urlFormat !== "jpg" && urlFormat !== "jpeg")) errObj.image = ("Image URL must end in .png, .jpg, or .jpeg")
 
-    const urlFormat1 = img1.split('.').pop()
-    if(img1 && (urlFormat1 !== "png" && urlFormat1 !== "jpg" && urlFormat1 !== "jpeg")) errObj.img1 = ("Image URL must end in .png, .jpg, or .jpeg")
+        const urlFormat1 = img1.split('.').pop()
+        if(img1 && (urlFormat1 !== "png" && urlFormat1 !== "jpg" && urlFormat1 !== "jpeg")) errObj.img1 = ("Image URL must end in .png, .jpg, or .jpeg")
 
-    const urlFormat2 = img2.split('.').pop()
-    if(img2 && (urlFormat2 !== "png" && urlFormat2 !== "jpg" && urlFormat2 !== "jpeg")) errObj.img2 = ("Image URL must end in .png, .jpg, or .jpeg")
+        const urlFormat2 = img2.split('.').pop()
+        if(img2 && (urlFormat2 !== "png" && urlFormat2 !== "jpg" && urlFormat2 !== "jpeg")) errObj.img2 = ("Image URL must end in .png, .jpg, or .jpeg")
 
 
-    const urlFormat3 = img3.split('.').pop()
-    if(img3 && (urlFormat3 !== "png" && urlFormat3 !== "jpg" && urlFormat3 !== "jpeg")) errObj.img3 = ("Image URL must end in .png, .jpg, or .jpeg")
+        const urlFormat3 = img3.split('.').pop()
+        if(img3 && (urlFormat3 !== "png" && urlFormat3 !== "jpg" && urlFormat3 !== "jpeg")) errObj.img3 = ("Image URL must end in .png, .jpg, or .jpeg")
 
-    const urlFormat4 = img4.split('.').pop()
-    if(img4 && (urlFormat4 !== "png" && urlFormat4 !== "jpg" && urlFormat4 !== "jpeg")) errObj.img4 = ("Image URL must end in .png, .jpg, or .jpeg")
+        const urlFormat4 = img4.split('.').pop()
+        if(img4 && (urlFormat4 !== "png" && urlFormat4 !== "jpg" && urlFormat4 !== "jpeg")) errObj.img4 = ("Image URL must end in .png, .jpg, or .jpeg")
 
-    const urlFormat5 = img5.split('.').pop()
-    if(img5 && (urlFormat5 !== "png" && urlFormat5 !== "jpg" && urlFormat5 !== "jpeg")) errObj.img5 = ("Image URL must end in .png, .jpg, or .jpeg")
-    setErrors(errObj)
+        const urlFormat5 = img5.split('.').pop()
+        if(img5 && (urlFormat5 !== "png" && urlFormat5 !== "jpg" && urlFormat5 !== "jpeg")) errObj.img5 = ("Image URL must end in .png, .jpg, or .jpeg")
+        setErrors(errObj)
     }, [address, city, state, description, lat, lng, name, url, price, country, img1, img2, img3, img4, img5])
     
     return (  

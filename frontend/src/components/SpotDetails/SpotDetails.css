@@ -88,10 +88,10 @@
     color: #999999;
 }
 
-.spot-container {
+/* .spot-container {
     display: flex;
     justify-content: center;
-}
+} */
 
 .spot-details {
     display: flex;
@@ -152,6 +152,14 @@
     grid-template-rows: 1fr 1fr;
     float: left;
 }
+
+.imagesGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 10px;
+}
+
 
 .reg-image {
     box-sizing: border-box;
