@@ -242,6 +242,7 @@
 
 .spot-reviews {
     align-self: start;
+    margin-bottom: 50px;
 }
 
 .spot-reviews h2 {
@@ -282,6 +283,7 @@
     box-shadow: 2px 2px #000000;
     cursor: pointer;
     margin-bottom: 1em;
+    margin-bottom: 10px;
 }
 
 .fa-coins {
